@@ -29,30 +29,15 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
-        SetStates();
+        
+        if (stateController.currentState == PlayerStateController.States.Chopping || stateController.currentState == PlayerStateController.States.Mining)
+        {
+            //When player chopping or mining, character can't move
+            return;
+        }
+        
         HandleMovement();
         HandleRotation();
-
-        if (Input.GetKeyDown(KeyCode.Space))
-            isCarrying = !isCarrying;
-    }
-
-    private void SetStates()
-    {
-        if(isMoving)
-        {
-            if (isCarrying)
-                stateController.ChangeState(PlayerStateController.States.CarryingMove);
-            else
-                stateController.ChangeState(PlayerStateController.States.Moving);
-        }
-        else
-        {
-            if (isCarrying)
-                stateController.ChangeState(PlayerStateController.States.CarryingIdle);
-            else
-                stateController.ChangeState(PlayerStateController.States.Idle);
-        }
     }
 
     private void HandleMovement()
@@ -80,5 +65,15 @@ public class PlayerController : MonoBehaviour
 
             characterVisual.transform.rotation = visualRotation;
         }
+    }
+
+    public bool IsMoving()
+    {
+        return isMoving;
+    }
+
+    public bool IsCarrying()
+    {
+        return isCarrying;
     }
 }

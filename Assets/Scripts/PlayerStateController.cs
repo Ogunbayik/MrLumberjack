@@ -7,30 +7,62 @@ public class PlayerStateController : MonoBehaviour
 {
     public event Action<States, States> OnStateChanged;
 
+    private PlayerController playerController;
+    private PlayerToolController playerToolController;
+
     public enum States
     {
         Idle,
         Moving,
         CarryingIdle,
-        CarryingMove
+        CarryingMove,
+        Chopping,
+        Mining
     }
     public States currentState;
     private void Awake()
     {
+        playerController = GetComponent<PlayerController>();
+        playerToolController = GetComponent<PlayerToolController>();
+
         currentState = States.Idle;
     }
 
-    void Start()
+    private void Update()
     {
-
+        SetStates();
     }
 
-    void Update()
+    private void SetStates()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
-            ChangeState(States.Moving);
-        else if (Input.GetKeyDown(KeyCode.E))
-            ChangeState(States.Idle);
+        if (Input.GetKeyDown(KeyCode.Space) && playerToolController.IsChopping() && currentState == States.Idle)
+        {
+            ChangeState(States.Chopping);
+            return;
+        }
+        else if (Input.GetKeyDown(KeyCode.Space) && playerToolController.IsMining() && currentState == States.Idle)
+        {
+            ChangeState(States.Mining);
+            return;
+        }
+
+        if (currentState != States.Chopping && currentState != States.Mining)
+        {
+            if (playerController.IsMoving())
+            {
+                if (playerController.IsCarrying())
+                    ChangeState(States.CarryingMove);
+                else
+                    ChangeState(States.Moving);
+            }
+            else
+            {
+                if (playerController.IsCarrying())
+                    ChangeState(States.CarryingIdle);
+                else
+                    ChangeState(States.Idle);
+            }
+        }
     }
 
     public void ChangeState(States newState)
