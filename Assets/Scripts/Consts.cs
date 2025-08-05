@@ -10,5 +10,7 @@ public class Consts
     {
         public const string MOVING = "isMoving";
         public const string CARRYING = "isCarrying";
+        public const string CHOPPING = "isChopping";
+        public const string MINING = "isMining";
     }
 }

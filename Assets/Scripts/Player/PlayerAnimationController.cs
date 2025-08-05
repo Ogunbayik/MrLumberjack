@@ -5,6 +5,7 @@ using UnityEngine;
 public class PlayerAnimationController : MonoBehaviour
 {
     private PlayerStateController stateController;
+    private PlayerToolController toolController;
 
     private Animator animator;
     private void Awake()
@@ -12,6 +13,7 @@ public class PlayerAnimationController : MonoBehaviour
         animator = GetComponent<Animator>();
 
         stateController = GetComponentInParent<PlayerStateController>();
+        toolController = GetComponentInParent<PlayerToolController>();
     }
     private void OnEnable()
     {
@@ -63,12 +65,12 @@ public class PlayerAnimationController : MonoBehaviour
 
     public void ChoppingAnimation(bool isChopping)
     {
-        animator.SetBool("isChopping", isChopping);
+        animator.SetBool(Consts.PlayerAnimationParameter.CHOPPING, isChopping);
     }
 
     public void MiningAnimation(bool isMining)
     {
-        animator.SetBool("isMining", isMining);
+        animator.SetBool(Consts.PlayerAnimationParameter.MINING, isMining);
     }
 
     public void ResetChoppingAnimation()
@@ -82,8 +84,25 @@ public class PlayerAnimationController : MonoBehaviour
         stateController.ChangeState(PlayerStateController.States.Idle);
     }
 
-    public Animator GetAnimator()
+    public void ActivateToolCollider()
     {
-        return animator;
+        var axeCollider = toolController.GetAxeCollider();
+        var pickaxeCollider = toolController.GetPickaxeCollider();
+
+        if (toolController.IsChopping())
+            axeCollider.enabled = true;
+        else if (toolController.IsMining())
+            pickaxeCollider.enabled = true;
+    }
+
+    public void DeactivateToolCollider()
+    {
+        var axeCollider = toolController.GetAxeCollider();
+        var pickaxeCollider = toolController.GetPickaxeCollider();
+
+        if (toolController.IsChopping())
+            axeCollider.enabled = false;
+        else if (toolController.IsMining())
+            pickaxeCollider.enabled = false;
     }
 }

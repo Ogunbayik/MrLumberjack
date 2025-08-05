@@ -19,6 +19,7 @@ public class PlayerToolController : MonoBehaviour
 
     private bool isChopping = false;
     private bool isMining = false;
+    private bool isCarrying = true;
     private void Awake()
     {
         stateController = GetComponent<PlayerStateController>();
@@ -35,18 +36,13 @@ public class PlayerToolController : MonoBehaviour
 
     private void Update()
     {
-        ChangeNextTool();
-        //SetStates();
-    }
+        if (stateController.currentState != PlayerStateController.States.Chopping && stateController.currentState != PlayerStateController.States.Mining)
+        {
+            if (Input.GetKeyDown(KeyCode.E))
+                ChangeNextTool();
+        }
 
-    private void SetStates()
-    {
-        if (isChopping && Input.GetKeyDown(KeyCode.Space) && stateController.currentState == PlayerStateController.States.Idle)
-            stateController.ChangeState(PlayerStateController.States.Chopping);
-        else if (isMining && Input.GetKeyDown(KeyCode.Space) && stateController.currentState == PlayerStateController.States.Idle)
-            stateController.ChangeState(PlayerStateController.States.Mining);
     }
-
     private void ChangeNextTool()
     {
         var axeIndex = 0;
@@ -64,6 +60,7 @@ public class PlayerToolController : MonoBehaviour
 
                     isChopping = true;
                     isMining = false;
+                    isCarrying = false;
                     break;
                 case Tools.Axe:
                     currentTool = Tools.Pickaxe;
@@ -73,6 +70,7 @@ public class PlayerToolController : MonoBehaviour
 
                     isChopping = false;
                     isMining = true;
+                    isCarrying = false;
                     break;
                 case Tools.Pickaxe:
                     currentTool = Tools.None;
@@ -82,10 +80,26 @@ public class PlayerToolController : MonoBehaviour
 
                     isChopping = false;
                     isMining = false;
+                    isCarrying = true;
                     break;
             }
-
         }
+    }
+
+    public BoxCollider GetAxeCollider()
+    {
+        var axeIndex = 0;
+        var collider = allTools[axeIndex].GetComponent<BoxCollider>();
+
+        return collider;
+    }
+
+    public BoxCollider GetPickaxeCollider()
+    {
+        var pickaxeIndex = 1;
+        var collider = allTools[pickaxeIndex].GetComponent<BoxCollider>();
+
+        return collider;
     }
 
     public bool IsChopping()
@@ -96,5 +110,10 @@ public class PlayerToolController : MonoBehaviour
     public bool IsMining()
     {
         return isMining;
+    }
+
+    public bool IsCarrying()
+    {
+        return isCarrying;
     }
 }
