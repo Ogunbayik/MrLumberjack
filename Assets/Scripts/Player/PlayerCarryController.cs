@@ -2,26 +2,53 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerCarry : MonoBehaviour
+public class PlayerCarryController : MonoBehaviour
 {
     private PlayerToolController toolController;
 
     private List<GameObject> carryList;
 
+    [SerializeField] private Transform carryPosition;
+    [SerializeField] private int maximumCarryCount;
+
+    private bool isCarrying;
     private void Awake()
     {
         toolController = GetComponent<PlayerToolController>();
 
         carryList = new List<GameObject>();
     }
+    private void OnEnable()
+    {
+        
+    }
     private void OnTriggerEnter(Collider other)
     {
         if(other.gameObject.TryGetComponent<ICarryable>(out ICarryable carryable))
         {
             if (toolController.IsCarrying())
-                carryable.Carry();
+            {
+                isCarrying = true;
+
+                carryable.Carry(this,carryPosition);
+            }
             else
                 Debug.Log("Player can not carry any log");
         }
+    }
+
+    public int GetMaximumCarryCount()
+    {
+        return maximumCarryCount;
+    }
+
+    public List<GameObject> GetCarryList()
+    {
+        return carryList;
+    }
+
+    public bool IsCarrying()
+    {
+        return isCarrying;
     }
 }

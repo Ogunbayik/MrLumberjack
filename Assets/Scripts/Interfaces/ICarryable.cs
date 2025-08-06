@@ -1,5 +1,5 @@
-
+using UnityEngine;
 public interface ICarryable
 {
-    public void Carry();
+    public void Carry(PlayerCarryController player, Transform carryPosition);
 }

@@ -8,6 +8,7 @@ public class PlayerStateController : MonoBehaviour
     public event Action<States, States> OnStateChanged;
 
     private PlayerController playerController;
+    private PlayerCarryController playerCarryController;
     private PlayerToolController playerToolController;
 
     public enum States
@@ -24,6 +25,7 @@ public class PlayerStateController : MonoBehaviour
     {
         playerController = GetComponent<PlayerController>();
         playerToolController = GetComponent<PlayerToolController>();
+        playerCarryController = GetComponent<PlayerCarryController>();
 
         currentState = States.Idle;
     }
@@ -50,14 +52,14 @@ public class PlayerStateController : MonoBehaviour
         {
             if (playerController.IsMoving())
             {
-                if (playerController.IsCarrying())
+                if (playerCarryController.IsCarrying())
                     ChangeState(States.CarryingMove);
                 else
                     ChangeState(States.Moving);
             }
             else
             {
-                if (playerController.IsCarrying())
+                if (playerCarryController.IsCarrying())
                     ChangeState(States.CarryingIdle);
                 else
                     ChangeState(States.Idle);

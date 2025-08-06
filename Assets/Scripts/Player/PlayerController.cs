@@ -19,7 +19,6 @@ public class PlayerController : MonoBehaviour
     private Vector3 movementDirection;
 
     private bool isMoving;
-    private bool isCarrying;
     private void Awake()
     {
         stateController = GetComponent<PlayerStateController>();
@@ -70,10 +69,5 @@ public class PlayerController : MonoBehaviour
     public bool IsMoving()
     {
         return isMoving;
-    }
-
-    public bool IsCarrying()
-    {
-        return isCarrying;
     }
 }

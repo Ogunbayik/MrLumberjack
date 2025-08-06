@@ -4,9 +4,21 @@ using UnityEngine;
 
 public class Log : MonoBehaviour, ICarryable
 {
-    public void Carry()
+    public void Carry(PlayerCarryController player, Transform carryPosition)
     {
-        Debug.Log("Player is carrying this log");
+        var carryList = player.GetCarryList();
+        var distanceBetweenLog = 5f;
+        var maximumCount = player.GetMaximumCarryCount();
+
+        if (carryList.Count < maximumCount)
+        {
+            carryList.Add(this.gameObject);
+            transform.SetParent(carryPosition);
+            var desiredPosition = (float)carryList.Count / distanceBetweenLog;
+
+            transform.position = new Vector3(carryPosition.position.x, carryPosition.position.y + desiredPosition, carryPosition.position.z);
+            transform.rotation = carryPosition.transform.rotation;
+        }
     }
 
 }
