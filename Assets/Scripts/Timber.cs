@@ -4,20 +4,14 @@ using UnityEngine;
 
 public class Timber : MonoBehaviour, ICarryable
 {
-    public void Carry(PlayerCarryController player, Transform carryPosition)
+    public GameObject GetCarriableObject => this.gameObject;
+
+    public float GetItemSpace => 10f;
+
+    public string GetItemName => "Timber";
+
+    public void PickUp(PlayerCarryController player)
     {
-        var carryList = player.GetCarryList();
-        var distanceBetweenLog = 5f;
-        var maximumCount = player.GetMaximumCarryCount();
-
-        if (carryList.Count < maximumCount)
-        {
-            carryList.Add(this.gameObject);
-            transform.SetParent(carryPosition);
-            var desiredPosition = (float)carryList.Count / distanceBetweenLog;
-
-            transform.position = new Vector3(carryPosition.position.x, carryPosition.position.y + desiredPosition, carryPosition.position.z);
-            transform.rotation = carryPosition.transform.rotation;
-        }
+        player.Carry(this);
     }
 }

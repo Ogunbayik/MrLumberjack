@@ -1,5 +1,9 @@
 using UnityEngine;
 public interface ICarryable
 {
-    public void Carry(PlayerCarryController player, Transform carryPosition);
+    public string GetItemName { get; }
+    public GameObject GetCarriableObject { get; }
+    public float GetItemSpace { get; }
+    public void PickUp(PlayerCarryController player);
+
 }

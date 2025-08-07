@@ -13,6 +13,7 @@ public class PlayerCarryController : MonoBehaviour
     [SerializeField] private int maximumCarryCount;
 
     private bool isCarrying;
+    private string carriedObjectName = null;
     private void Awake()
     {
         toolController = GetComponent<PlayerToolController>();
@@ -26,13 +27,39 @@ public class PlayerCarryController : MonoBehaviour
             if (toolController.IsCarrying())
             {
                 isCarrying = true;
-
-                carryable.Carry(this,carryPosition);
+                carryable.PickUp(this);
             }
             else
                 Debug.Log("Player can not carry any log");
         }
     }
+    public void Carry(ICarryable carryable)
+    {
+        var carryableObject = carryable.GetCarriableObject;
+        var itemSpace = carryable.GetItemSpace;
+
+        if (carriedObjectName == null)
+            carriedObjectName = carryable.GetItemName;
+
+        if(carriedObjectName == carryable.GetItemName && carriedList.Count < maximumCarryCount)
+        {
+            var desiredPosition = (float)carriedList.Count / itemSpace;
+            carriedList.Add(carryableObject);
+            carryableObject.transform.SetParent(carryPosition);
+
+            carryableObject.transform.position = new Vector3(carryPosition.position.x, carryPosition.position.y + desiredPosition, carryPosition.position.z);
+            carryableObject.transform.rotation = carryPosition.rotation;
+        }
+        else
+        {
+            Debug.Log("You need to find same type item");
+        }
+    }
+    public void ResetCarriedObjectName()
+    {
+        carriedObjectName = null;
+    }
+
     public void ResetCarryingState()
     {
         isCarrying = false;
@@ -42,7 +69,7 @@ public class PlayerCarryController : MonoBehaviour
         return maximumCarryCount;
     }
 
-    public List<GameObject> GetCarryList()
+    public List<GameObject> GetCarriedList()
     {
         return carriedList;
     }

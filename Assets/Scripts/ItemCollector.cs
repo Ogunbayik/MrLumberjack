@@ -24,7 +24,7 @@ public class ItemCollector : MonoBehaviour
     {
         if(other.gameObject.TryGetComponent<PlayerCarryController>(out PlayerCarryController player))
         {
-            var carryList = player.GetCarryList();
+            var carryList = player.GetCarriedList();
 
             if(carryList.Count > 0)
             {
@@ -33,7 +33,7 @@ public class ItemCollector : MonoBehaviour
             else
             {
                 player.ResetCarryingState();
-                Debug.Log("Player need to find item for collecting");
+                player.ResetCarriedObjectName();
             }
         }
     }
@@ -46,7 +46,7 @@ public class ItemCollector : MonoBehaviour
             buildingManager.IncreaseMaterialCount();
             buildingManager.IsProducing();
 
-            var carryList = player.GetCarryList();
+            var carryList = player.GetCarriedList();
             var carryCount = carryList.Count;
 
             Destroy(carryList[carryCount - 1].gameObject);
