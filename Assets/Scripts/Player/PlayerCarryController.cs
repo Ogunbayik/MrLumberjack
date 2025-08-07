@@ -6,8 +6,9 @@ public class PlayerCarryController : MonoBehaviour
 {
     private PlayerToolController toolController;
 
-    private List<GameObject> carryList;
+    private List<GameObject> carriedList;
 
+    [Header("Carry Settings")]
     [SerializeField] private Transform carryPosition;
     [SerializeField] private int maximumCarryCount;
 
@@ -16,11 +17,7 @@ public class PlayerCarryController : MonoBehaviour
     {
         toolController = GetComponent<PlayerToolController>();
 
-        carryList = new List<GameObject>();
-    }
-    private void OnEnable()
-    {
-        
+        carriedList = new List<GameObject>();
     }
     private void OnTriggerEnter(Collider other)
     {
@@ -36,7 +33,10 @@ public class PlayerCarryController : MonoBehaviour
                 Debug.Log("Player can not carry any log");
         }
     }
-
+    public void ResetCarryingState()
+    {
+        isCarrying = false;
+    }
     public int GetMaximumCarryCount()
     {
         return maximumCarryCount;
@@ -44,7 +44,7 @@ public class PlayerCarryController : MonoBehaviour
 
     public List<GameObject> GetCarryList()
     {
-        return carryList;
+        return carriedList;
     }
 
     public bool IsCarrying()
