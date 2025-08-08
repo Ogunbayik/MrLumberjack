@@ -1,13 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using System;
 
 public class Tree : MonoBehaviour, IChopable
 {
+    private Respawning respawning;
+
     private List<GameObject> logList;
 
-    [Header("General Settings")]
+    [Header("Health Settings")]
     [SerializeField] private int minimumHealth;
     [SerializeField] private int maximumHealth;
     [Header("Log Settings")]
@@ -19,11 +20,12 @@ public class Tree : MonoBehaviour, IChopable
     private int randomHealth;
     private void Awake()
     {
+        respawning = GetComponent<Respawning>();
         logList = new List<GameObject>();
     }
     private void Start()
     {
-        randomHealth = UnityEngine.Random.Range(minimumHealth, maximumHealth);
+        randomHealth = Random.Range(minimumHealth, maximumHealth);
         currentHealth = randomHealth;
     }
     public void Chop()
@@ -33,12 +35,11 @@ public class Tree : MonoBehaviour, IChopable
 
         if (currentHealth <= 0)
         {
-            this.gameObject.SetActive(false);
-
             SpawnLogs();
+            currentHealth = randomHealth;
+            respawning.DeactivateVisual();
         }
     }
-
     public void SpawnLogs()
     {
         var logCount = randomHealth;
@@ -53,6 +54,4 @@ public class Tree : MonoBehaviour, IChopable
             log.transform.position = new Vector3(transform.position.x, transform.position.y, transform.position.z + desiredLogPosition);
         }
     }
-
-    
 }

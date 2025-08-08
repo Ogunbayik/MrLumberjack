@@ -94,6 +94,7 @@ GameObject:
   - component: {fileID: 6460342653816884483}
   - component: {fileID: 6460342653816884484}
   - component: {fileID: 7422559029131989579}
+  - component: {fileID: 3802101358847051755}
   m_Layer: 0
   m_Name: Tree
   m_TagString: Untagged
@@ -158,6 +159,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 89a4c4511bf46d249bfa311c8121b227, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  minimumHealth: 2
+  maximumHealth: 4
   logPrefab: {fileID: 3226282047523510717, guid: 5c0ca946714101c44a51992a809382ee, type: 3}
-  minimumHealth: 3
-  maximumHealth: 6
+  logDistanceBetween: 3
+--- !u!114 &3802101358847051755
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6460342653816884481}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 510e91e642126584ab7fc5408d947390, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  prefabVisual: {fileID: 1384372186845247579}
+  maxRespawnTime: 20

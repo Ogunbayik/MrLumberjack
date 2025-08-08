@@ -1,17 +1,20 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class BuildingManager : MonoBehaviour
 {
     private List<GameObject> produceList;
 
     [Header("Building Settings")]
+    [SerializeField] private string materialNeededName;
     [SerializeField] private GameObject itemPrefab;
     [SerializeField] private Transform producePosition;
     [SerializeField] private int materialNeededCount;
     [SerializeField] private int maxProduceTimer;
     [SerializeField] private float distanceBetweenItem;
+    [SerializeField] private int maxProduceCount;
 
     private int materialCount;
 
@@ -40,17 +43,9 @@ public class BuildingManager : MonoBehaviour
         }
     }
 
-    public void IsProducing()
-    {
-        if (materialCount >= materialNeededCount)
-            isProducing = true;
-        else
-            isProducing = false;
-    }
-
     private void ProduceItem()
     {
-        var item = Instantiate(itemPrefab);
+        var item = Instantiate(itemPrefab, producePosition);
         produceList.Add(item);
         var produceCount = produceList.Count;
         var desiredPosition = (float)produceCount / distanceBetweenItem;
@@ -61,5 +56,22 @@ public class BuildingManager : MonoBehaviour
     public void IncreaseMaterialCount()
     {
         materialCount++;
+    }
+    public void IsProducing()
+    {
+        if (materialCount >= materialNeededCount && produceList.Count < maxProduceCount)
+            isProducing = true;
+        else
+            isProducing = false;
+    }
+
+    public string GetMaterialNeededName()
+    {
+        return materialNeededName;
+    }
+
+    public void RemoveProduceItem(GameObject produceItem)
+    {
+        produceList.Remove(produceItem);
     }
 }

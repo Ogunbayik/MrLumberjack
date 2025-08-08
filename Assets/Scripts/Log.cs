@@ -10,6 +10,8 @@ public class Log : MonoBehaviour, ICarryable
 
     public string GetItemName => "Log";
 
+    public bool IsProduceItem => false;
+
     public void PickUp(PlayerCarryController player)
     {
         player.Carry(this);

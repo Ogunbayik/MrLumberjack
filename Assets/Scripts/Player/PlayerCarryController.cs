@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class PlayerCarryController : MonoBehaviour
 {
@@ -37,9 +38,16 @@ public class PlayerCarryController : MonoBehaviour
     {
         var carryableObject = carryable.GetCarriableObject;
         var itemSpace = carryable.GetItemSpace;
+        var isProduceItem = carryable.IsProduceItem;
 
         if (carriedObjectName == null)
             carriedObjectName = carryable.GetItemName;
+
+        if (isProduceItem)
+            Debug.Log("Player is carrying produce item");
+        else
+            Debug.Log("Player is carrying normal item");
+
 
         if(carriedObjectName == carryable.GetItemName && carriedList.Count < maximumCarryCount)
         {
@@ -64,9 +72,10 @@ public class PlayerCarryController : MonoBehaviour
     {
         isCarrying = false;
     }
-    public int GetMaximumCarryCount()
+
+    public string GetCarriedObjectName()
     {
-        return maximumCarryCount;
+        return carriedObjectName;
     }
 
     public List<GameObject> GetCarriedList()

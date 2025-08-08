@@ -28,7 +28,10 @@ public class ItemCollector : MonoBehaviour
 
             if(carryList.Count > 0)
             {
-                CollectItem(player);
+                if (buildingManager.GetMaterialNeededName() == player.GetCarriedObjectName())
+                    CollectItem(player);
+                else
+                    Debug.Log("Can't take this item");
             }
             else
             {
