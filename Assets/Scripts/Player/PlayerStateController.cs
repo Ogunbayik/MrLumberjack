@@ -20,6 +20,8 @@ public class PlayerStateController : MonoBehaviour
         Chopping,
         Mining
     }
+
+    [HideInInspector]
     public States currentState;
     private void Awake()
     {

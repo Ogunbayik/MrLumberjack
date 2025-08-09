@@ -5,6 +5,7 @@ using UnityEngine;
 public class PlayerToolController : MonoBehaviour
 {
     private PlayerStateController stateController;
+    private PlayerCarryController carryController;
 
     private enum Tools
     {
@@ -23,6 +24,7 @@ public class PlayerToolController : MonoBehaviour
     private void Awake()
     {
         stateController = GetComponent<PlayerStateController>();
+        carryController = GetComponent<PlayerCarryController>();
     }
     void Start()
     {
@@ -36,12 +38,10 @@ public class PlayerToolController : MonoBehaviour
 
     private void Update()
     {
-        if (stateController.currentState != PlayerStateController.States.Chopping && stateController.currentState != PlayerStateController.States.Mining)
+        if (IsToolSwitchable() && Input.GetKeyDown(KeyCode.E))
         {
-            if (Input.GetKeyDown(KeyCode.E))
-                ChangeNextTool();
+            ChangeNextTool();
         }
-
     }
     private void ChangeNextTool()
     {
@@ -100,6 +100,19 @@ public class PlayerToolController : MonoBehaviour
         var collider = allTools[pickaxeIndex].GetComponent<BoxCollider>();
 
         return collider;
+    }
+
+    private bool IsToolSwitchable()
+    {
+        if (stateController.currentState != PlayerStateController.States.Chopping && stateController.currentState != PlayerStateController.States.Mining)
+        {
+            if (carryController.IsCarrying())
+                return false;
+            else
+                return true;
+        }
+        else
+            return false;
     }
 
     public bool IsChopping()

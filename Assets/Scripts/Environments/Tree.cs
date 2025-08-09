@@ -11,7 +11,7 @@ public class Tree : MonoBehaviour, IChopable
     [Header("Health Settings")]
     [SerializeField] private int minimumHealth;
     [SerializeField] private int maximumHealth;
-    [Header("Log Settings")]
+    [Header("General Settings")]
     [SerializeField] private GameObject logPrefab;
     [Tooltip("If you increase number, logs are closer each other")]
     [SerializeField] private float logDistanceBetween;

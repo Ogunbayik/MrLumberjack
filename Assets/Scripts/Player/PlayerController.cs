@@ -5,16 +5,20 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     private PlayerStateController stateController;
+    private PlayerCarryController carryController;
 
     private Rigidbody playerRb;
 
     [Header("Movement Settings")]
-    [SerializeField] private float movementSpeed;
+    [SerializeField] private float carrySpeed;
+    [SerializeField] private float runSpeed;
     [SerializeField] private float rotationSpeed;
+    [Header("Child Settings")]
     [SerializeField] private Transform characterVisual;
 
     private float horizontalInput;
     private float verticalInput;
+    private float movementSpeed;
 
     private Vector3 movementDirection;
 
@@ -22,21 +26,34 @@ public class PlayerController : MonoBehaviour
     private void Awake()
     {
         stateController = GetComponent<PlayerStateController>();
+        carryController = GetComponent<PlayerCarryController>();
 
         playerRb = GetComponent<Rigidbody>();
+        movementSpeed = runSpeed;
     }
 
     void Update()
     {
-        
         if (stateController.currentState == PlayerStateController.States.Chopping || stateController.currentState == PlayerStateController.States.Mining)
         {
             //When player chopping or mining, character can't move
             return;
         }
-        
+
+        AdjustSpeed();
         HandleMovement();
         HandleRotation();
+    }
+
+    private void AdjustSpeed()
+    {
+        if (IsMoving())
+        {
+            if (carryController.IsCarrying())
+                movementSpeed = carrySpeed;
+            else
+                movementSpeed = runSpeed;
+        }
     }
 
     private void HandleMovement()
@@ -46,12 +63,7 @@ public class PlayerController : MonoBehaviour
 
         movementDirection = new Vector3(horizontalInput, 0f, verticalInput);
 
-        if (movementDirection != Vector3.zero)
-            isMoving = true;
-        else
-            isMoving = false;
-
-        if (isMoving)
+        if (IsMoving())
             playerRb.velocity = movementDirection * movementSpeed;
     }
 
@@ -68,6 +80,12 @@ public class PlayerController : MonoBehaviour
 
     public bool IsMoving()
     {
+        if (movementDirection != Vector3.zero)
+            isMoving = true;
+        else
+            isMoving = false;
+
         return isMoving;
     }
+
 }

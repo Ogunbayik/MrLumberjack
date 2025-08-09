@@ -27,7 +27,7 @@ public class PlayerCarryController : MonoBehaviour
         {
             if (toolController.IsCarrying())
             {
-                isCarrying = true;
+                IsCarrying();
                 carryable.PickUp(this);
             }
             else
@@ -38,16 +38,9 @@ public class PlayerCarryController : MonoBehaviour
     {
         var carryableObject = carryable.GetCarriableObject;
         var itemSpace = carryable.GetItemSpace;
-        var isProduceItem = carryable.IsProduceItem;
 
         if (carriedObjectName == null)
             carriedObjectName = carryable.GetItemName;
-
-        if (isProduceItem)
-            Debug.Log("Player is carrying produce item");
-        else
-            Debug.Log("Player is carrying normal item");
-
 
         if(carriedObjectName == carryable.GetItemName && carriedList.Count < maximumCarryCount)
         {
@@ -67,12 +60,6 @@ public class PlayerCarryController : MonoBehaviour
     {
         carriedObjectName = null;
     }
-
-    public void ResetCarryingState()
-    {
-        isCarrying = false;
-    }
-
     public string GetCarriedObjectName()
     {
         return carriedObjectName;
@@ -85,6 +72,16 @@ public class PlayerCarryController : MonoBehaviour
 
     public bool IsCarrying()
     {
+        if (carriedList.Count > 0)
+            isCarrying = true;
+        else
+            isCarrying = false;
+
         return isCarrying;
+    }
+
+    public Transform GetCarryPosition()
+    {
+        return carryPosition;
     }
 }

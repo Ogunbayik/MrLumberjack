@@ -9,12 +9,13 @@ public class BuildingManager : MonoBehaviour
 
     [Header("Building Settings")]
     [SerializeField] private string materialNeededName;
-    [SerializeField] private GameObject itemPrefab;
-    [SerializeField] private Transform producePosition;
     [SerializeField] private int materialNeededCount;
+    [Header("Produce Settings")]
+    [SerializeField] private GameObject producePrefab;
+    [SerializeField] private Transform producePosition;
     [SerializeField] private int maxProduceTimer;
-    [SerializeField] private float distanceBetweenItem;
     [SerializeField] private int maxProduceCount;
+    [SerializeField] private float distanceBetweenItem;
 
     private int materialCount;
 
@@ -28,50 +29,60 @@ public class BuildingManager : MonoBehaviour
     }
     void Update()
     {
-        if(isProducing)
+        ProduceItem();
+    }
+
+    private void ProduceItem()
+    {
+        if (isProducing)
         {
             produceTimer -= Time.deltaTime;
 
             if(produceTimer <= 0)
             {
+                var item = Instantiate(producePrefab, producePosition);
+                produceList.Add(item);
+                var itemOffsetY = (float)produceList.Count / distanceBetweenItem;
+
+                item.transform.position = new Vector3(producePosition.position.x, producePosition.position.y + (item.transform.localScale.y / 2), producePosition.position.z - itemOffsetY);
+
                 materialCount -= materialNeededCount;
                 produceTimer = maxProduceTimer;
-
-                ProduceItem();
                 IsProducing();
             }
         }
+        else
+        {
+            produceTimer = maxProduceTimer;
+        }
     }
-
-    private void ProduceItem()
-    {
-        var item = Instantiate(itemPrefab, producePosition);
-        produceList.Add(item);
-        var produceCount = produceList.Count;
-        var desiredPosition = (float)produceCount / distanceBetweenItem;
-
-        item.transform.position = new Vector3(producePosition.position.x, producePosition.position.y + (item.transform.localScale.y / 2), producePosition.position.z - desiredPosition);
-    }
-
     public void IncreaseMaterialCount()
     {
         materialCount++;
     }
-    public void IsProducing()
+    public bool IsProducing()
     {
         if (materialCount >= materialNeededCount && produceList.Count < maxProduceCount)
             isProducing = true;
         else
             isProducing = false;
-    }
 
+        return isProducing;
+    }
+    public bool HasRequiredMaterial(PlayerCarryController player)
+    {
+        if (player.GetCarriedObjectName() == materialNeededName)
+            return true;
+        else
+            return false;
+    }
     public string GetMaterialNeededName()
     {
         return materialNeededName;
     }
 
-    public void RemoveProduceItem(GameObject produceItem)
+    public List<GameObject> GetProduceList()
     {
-        produceList.Remove(produceItem);
+        return produceList;
     }
 }

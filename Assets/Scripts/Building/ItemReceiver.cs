@@ -2,13 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ItemCollector : MonoBehaviour
+public class ItemReceiver : MonoBehaviour
 {
     private BuildingManager buildingManager;
 
-    [SerializeField] private float maxCollectTimer;
+    [SerializeField] private float maxReceiveTime;
 
-    private float collectTimer;
+    private float receiveTimer;
 
     private void Awake()
     {
@@ -18,7 +18,7 @@ public class ItemCollector : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.GetComponent<PlayerCarryController>())
-            collectTimer = (float) maxCollectTimer / 2;
+            receiveTimer = (float) maxReceiveTime / 2;
     }
     private void OnTriggerStay(Collider other)
     {
@@ -28,23 +28,23 @@ public class ItemCollector : MonoBehaviour
 
             if(carryList.Count > 0)
             {
-                if (buildingManager.GetMaterialNeededName() == player.GetCarriedObjectName())
-                    CollectItem(player);
+                if (buildingManager.HasRequiredMaterial(player))
+                    ReceiveItem(player);
                 else
                     Debug.Log("Can't take this item");
             }
             else
             {
-                player.ResetCarryingState();
+                player.IsCarrying();
                 player.ResetCarriedObjectName();
             }
         }
     }
-    private void CollectItem(PlayerCarryController player)
+    private void ReceiveItem(PlayerCarryController player)
     {
-        collectTimer -= Time.deltaTime;
+        receiveTimer -= Time.deltaTime;
 
-        if(collectTimer <= 0)
+        if(receiveTimer <= 0)
         {
             buildingManager.IncreaseMaterialCount();
             buildingManager.IsProducing();
@@ -54,7 +54,7 @@ public class ItemCollector : MonoBehaviour
 
             Destroy(carryList[carryCount - 1].gameObject);
             carryList.Remove(carryList[carryCount - 1]);
-            collectTimer = maxCollectTimer;
+            receiveTimer = maxReceiveTime;
         }
     }
 
