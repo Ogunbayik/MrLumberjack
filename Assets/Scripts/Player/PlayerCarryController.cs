@@ -56,6 +56,15 @@ public class PlayerCarryController : MonoBehaviour
             Debug.Log("You need to find same type item");
         }
     }
+
+    public void DestroyLastListObject()
+    {
+        if (carriedList.Count > 0)
+        {
+            Destroy(carriedList[carriedList.Count - 1].gameObject);
+            carriedList.Remove(carriedList[carriedList.Count - 1]);
+        }
+    }
     public void ResetCarriedObjectName()
     {
         carriedObjectName = null;

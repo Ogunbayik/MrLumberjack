@@ -49,11 +49,7 @@ public class ItemReceiver : MonoBehaviour
             buildingManager.IncreaseMaterialCount();
             buildingManager.IsProducing();
 
-            var carryList = player.GetCarriedList();
-            var carryCount = carryList.Count;
-
-            Destroy(carryList[carryCount - 1].gameObject);
-            carryList.Remove(carryList[carryCount - 1]);
+            player.DestroyLastListObject();
             receiveTimer = maxReceiveTime;
         }
     }

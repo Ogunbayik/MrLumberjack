@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using System;
+using UnityEngine.UI;
 
 public class BuildingManager : MonoBehaviour
 {
@@ -16,6 +16,10 @@ public class BuildingManager : MonoBehaviour
     [SerializeField] private int maxProduceTimer;
     [SerializeField] private int maxProduceCount;
     [SerializeField] private float distanceBetweenItem;
+    [Header("UI Settings")]
+    [SerializeField] private Image imageMaterial;
+    [SerializeField] private Sprite spriteMaterial;
+    [SerializeField] private Vector3 imageRotation;
 
     private int materialCount;
 
@@ -25,11 +29,21 @@ public class BuildingManager : MonoBehaviour
     private void Awake()
     {
         produceList = new List<GameObject>();
-        produceTimer = maxProduceTimer;
+    }
+    private void Start()
+    {
+        InitializeBuilding();
     }
     void Update()
     {
         ProduceItem();
+    }
+
+    private void InitializeBuilding()
+    {
+        imageMaterial.sprite = spriteMaterial;
+        imageMaterial.transform.rotation = Quaternion.Euler(imageRotation);
+        produceTimer = maxProduceTimer;
     }
 
     private void ProduceItem()
@@ -42,9 +56,14 @@ public class BuildingManager : MonoBehaviour
             {
                 var item = Instantiate(producePrefab, producePosition);
                 produceList.Add(item);
-                var itemOffsetY = (float)produceList.Count / distanceBetweenItem;
+                var itemOffset = (float)produceList.Count / distanceBetweenItem;
 
-                item.transform.position = new Vector3(producePosition.position.x, producePosition.position.y + (item.transform.localScale.y / 2), producePosition.position.z - itemOffsetY);
+                if (IsDirectionX())
+                    item.transform.position = new Vector3(producePosition.position.x - itemOffset, producePosition.position.y + (item.transform.localScale.y / 2), producePosition.position.z);
+                else
+                    item.transform.position = new Vector3(producePosition.position.x, producePosition.position.y + (item.transform.localScale.y / 2), producePosition.position.z - itemOffset);
+
+
 
                 materialCount -= materialNeededCount;
                 produceTimer = maxProduceTimer;
@@ -59,6 +78,13 @@ public class BuildingManager : MonoBehaviour
     public void IncreaseMaterialCount()
     {
         materialCount++;
+    }
+    public bool IsDirectionX()
+    {
+        if (transform.rotation.y == 0 || transform.rotation.y == 180)
+            return false;
+        else
+            return true;
     }
     public bool IsProducing()
     {
