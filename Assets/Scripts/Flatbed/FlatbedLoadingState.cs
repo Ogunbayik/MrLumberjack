@@ -16,7 +16,6 @@ public class FlatbedLoadingState : IFlatbedState
 
     public void UpdateState(FlatbedController flatbed)
     {
-        if (Input.GetKeyDown(KeyCode.Space))
-            flatbed.SetState(new FlatbedAcceleratingState());
+
     }
 }

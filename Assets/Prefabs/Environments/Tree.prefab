@@ -176,4 +176,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   prefabVisual: {fileID: 1384372186845247579}
-  maxRespawnTime: 20
+  maxRespawnTime: 60

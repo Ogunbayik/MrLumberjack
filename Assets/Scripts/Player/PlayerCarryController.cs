@@ -64,6 +64,11 @@ public class PlayerCarryController : MonoBehaviour
             Destroy(carriedList[carriedList.Count - 1].gameObject);
             carriedList.Remove(carriedList[carriedList.Count - 1]);
         }
+        else
+        {
+            IsCarrying();
+            ResetCarriedObjectName();
+        }
     }
     public void ResetCarriedObjectName()
     {

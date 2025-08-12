@@ -1,14 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class StandReciever : MonoBehaviour
 {
+    public event Action<FlatbedController> OnAllItemDelivered;
+
     private Stand stand;
 
     private FlatbedController flatbed;
-
-    private string carriedObjectName;
 
     [SerializeField] private float maxReceiverTime;
 
@@ -22,11 +23,6 @@ public class StandReciever : MonoBehaviour
     {
         receiverTime = maxReceiverTime;
     }
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.gameObject.TryGetComponent<PlayerCarryController>(out PlayerCarryController player))
-            carriedObjectName = player.GetCarriedObjectName();
-    }
     private void OnTriggerStay(Collider other)
     {
         if (other.gameObject.TryGetComponent<PlayerCarryController>(out PlayerCarryController player))
@@ -34,14 +30,18 @@ public class StandReciever : MonoBehaviour
             flatbed = stand.GetFlatbed();
             if (flatbed != null)
             {
-                if (flatbed.requiredItemName == player.GetCarriedObjectName())
+                if (flatbed.CanBeGiven(player) && !flatbed.HasTruckLoaded())
                 {
                     ReceiveItemToFlatbed(player);
                 }
-                else
+                else if (flatbed.HasTruckLoaded())
                 {
-                    Debug.Log("Player need to find required item for flatbed");
+                    OnAllItemDelivered?.Invoke(flatbed);
                 }
+            }
+            else
+            {
+                Debug.Log("Player need to wait any flatbed");
             }
         }
     }
@@ -51,27 +51,10 @@ public class StandReciever : MonoBehaviour
 
         if(receiverTime <= 0)
         {
+            player.DestroyLastListObject();
+            flatbed.DecreaseRequiredItemCount();
+            stand.UpdateUI(flatbed.requiredItemCount);
             receiverTime = maxReceiverTime;
-
-            if (flatbed.requiredItemCount > 0)
-            {
-                flatbed.DecreaseRequiredItemCount();
-                player.DestroyLastListObject();
-            }
-            else
-                Debug.Log("Flatbed receive all item");
         }
-    }
-
-
-    private void OnTriggerExit(Collider other)
-    {
-        if (other.gameObject.GetComponent<PlayerCarryController>())
-            carriedObjectName = null;
-    }
-
-    public string GetPlayerCarriedName()
-    {
-        return carriedObjectName;
     }
 }

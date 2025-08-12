@@ -13,4 +13,10 @@ public class Consts
         public const string CHOPPING = "isChopping";
         public const string MINING = "isMining";
     }
+
+    public struct FlatbedMovementPositions
+    {
+        public const string STAND_POSITION = "StandPosition";
+        public const string EXIT_POSITION = "ExitPosition";
+    }
 }

@@ -24,20 +24,10 @@ public class ItemReceiver : MonoBehaviour
     {
         if(other.gameObject.TryGetComponent<PlayerCarryController>(out PlayerCarryController player))
         {
-            var carryList = player.GetCarriedList();
-
-            if(carryList.Count > 0)
-            {
-                if (buildingManager.HasRequiredMaterial(player))
-                    ReceiveItem(player);
-                else
-                    Debug.Log("Can't take this item");
-            }
+            if (buildingManager.HasRequiredMaterial(player))
+                ReceiveItem(player);
             else
-            {
-                player.IsCarrying();
-                player.ResetCarriedObjectName();
-            }
+                Debug.Log("Can't take this item");
         }
     }
     private void ReceiveItem(PlayerCarryController player)
