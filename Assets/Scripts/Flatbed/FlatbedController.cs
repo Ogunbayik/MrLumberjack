@@ -15,6 +15,7 @@ public class FlatbedController : MonoBehaviour
     public string requiredItemName;
     public int minRequiredItemCount;
     public int maxRequiredItemCount;
+    public int itemMoney;
     [Header("Distance Settings")]
     public float deceleratingDistance;
     [Header("Movement Settings")]
