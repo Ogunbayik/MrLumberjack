@@ -6,7 +6,7 @@ public class FlatbedLoadingState : IFlatbedState
 {
     public void EnterState(FlatbedController flatbed)
     {
-
+        
     }
 
     public void ExitState(FlatbedController flatbed)
@@ -16,6 +16,7 @@ public class FlatbedLoadingState : IFlatbedState
 
     public void UpdateState(FlatbedController flatbed)
     {
-
+        if (flatbed.isDelivered)
+            flatbed.SetState(new FlatbedAcceleratingState());
     }
 }

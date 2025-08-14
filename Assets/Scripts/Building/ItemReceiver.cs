@@ -24,12 +24,18 @@ public class ItemReceiver : MonoBehaviour
     {
         if(other.gameObject.TryGetComponent<PlayerCarryController>(out PlayerCarryController player))
         {
-            if (buildingManager.HasRequiredMaterial(player))
-                ReceiveItem(player);
+            if(buildingManager.IsUnlocked())
+            {
+                UnlockBuilding();
+            }
             else
-                Debug.Log("Can't take this item");
+            {
+                if (buildingManager.HasRequiredMaterial(player))
+                    ReceiveItem(player);
+            }
         }
     }
+
     private void ReceiveItem(PlayerCarryController player)
     {
         receiveTimer -= Time.deltaTime;
@@ -43,6 +49,27 @@ public class ItemReceiver : MonoBehaviour
             receiveTimer = maxReceiveTime;
         }
     }
+    private void UnlockBuilding()
+    {
+        var currentMoney = MoneyManager.Instance.GetCurrentMoney();
+        if (currentMoney > buildingManager.GetBuildCost())
+        {
+            buildingManager.UnlockBuilding();
+        }
+        else
+        {
+            Debug.Log("Player need to earn enough money");
+        }
+    }
+
+    private IEnumerator UnlockingBuilding()
+    {
+        var currentMoney = MoneyManager.Instance.GetCurrentMoney();
+
+        yield return new WaitForSeconds(2f);
+
+    }
+
 
 
 }

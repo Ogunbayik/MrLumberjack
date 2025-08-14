@@ -12,7 +12,7 @@ public class MoneyManager : MonoBehaviour
     [SerializeField] private Sprite coinSprite;
     [SerializeField] private TextMeshProUGUI coinText;
     
-    private int playerMoney;
+    private int currentMoney;
     private void Awake()
     {
         #region Singleton
@@ -36,21 +36,27 @@ public class MoneyManager : MonoBehaviour
     public void InitializeMoneyUI()
     {
         coinImage.sprite = coinSprite;
+        currentMoney = 50;
+        coinText.text = currentMoney.ToString();
     }
 
-    public void UpdateUI()
+    public void UpdateMoneyUI()
     {
-        coinText.text = playerMoney.ToString();
+        coinText.text = currentMoney.ToString();
     }
 
     public void AddMoney(int money)
     {
-        playerMoney += money;
+        currentMoney += money;
     }
-
     public void SpendMoney(int money)
     {
-        playerMoney -= money;
+        currentMoney -= money;
+    }
+
+    public int GetCurrentMoney()
+    {
+        return currentMoney;
     }
 
 }

@@ -16,18 +16,32 @@ public class Stand : MonoBehaviour
     private void Awake()
     {
         standReciever = GetComponentInChildren<StandReciever>();
-        ActivateUI(false);
+        ShowItemCounterUI(false);
     }
     private void OnEnable()
     {
-        standReciever.OnAllItemDelivered += StandReciever_OnAllItemDelivered;
+        standReciever.OnItemDelivered += StandReciever_OnItemDelivered;
+    }
+    private void OnDisable()
+    {
+        standReciever.OnItemDelivered -= StandReciever_OnItemDelivered;
     }
 
-    private void StandReciever_OnAllItemDelivered(FlatbedController flatbed)
+    private void StandReciever_OnItemDelivered(FlatbedController flatbed)
     {
-        flatbed.SetMovementPosition(flatbed.exitPosition);
-        flatbed.SetState(new FlatbedAcceleratingState());
-        ActivateUI(false);
+        flatbed.DecreaseRequiredItemCount();
+        flatbed.HasTruckDelivered();
+
+        if (flatbed.currentCount == 0)
+        {
+            flatbed.SetMovementPosition(flatbed.exitPosition); 
+            
+            var money = flatbed.itemMoney * flatbed.requiredCountItem;
+            MoneyManager.Instance.AddMoney(money);
+            MoneyManager.Instance.UpdateMoneyUI();
+        }
+
+        UpdateRequiredCount(flatbed.currentCount);
     }
 
     private void OnTriggerEnter(Collider other)
@@ -36,9 +50,9 @@ public class Stand : MonoBehaviour
         {
             this.flatbed = flatbed;
             standImage.sprite = flatbed.materialSprite;
-            countText.text = flatbed.requiredItemCount.ToString();
+            countText.text = flatbed.requiredCountItem.ToString();
 
-            ActivateUI(true);
+            ShowItemCounterUI(true);
         }
     }
     private void OnTriggerExit(Collider other)
@@ -47,15 +61,16 @@ public class Stand : MonoBehaviour
         {
             standImage.sprite = null;
             flatbed = null;
+            ShowItemCounterUI(false);
         }
     }
 
-    public void ActivateUI(bool isActive)
+    public void ShowItemCounterUI(bool isActive)
     {
         standImage.gameObject.SetActive(isActive);
         countText.gameObject.SetActive(isActive);
     }
-    public void UpdateUI(int count)
+    public void UpdateRequiredCount(int count)
     {
         countText.text = count.ToString();
     }

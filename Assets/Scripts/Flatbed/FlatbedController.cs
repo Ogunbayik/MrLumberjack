@@ -28,15 +28,17 @@ public class FlatbedController : MonoBehaviour
     [HideInInspector]
     public bool isLoaded;
     [HideInInspector]
-    public int requiredItemCount;
+    public int requiredCountItem;
     [HideInInspector]
     public Transform standPosition;
     [HideInInspector]
     public Transform exitPosition;
     [HideInInspector]
     public Transform movementPosition;
-
-    private int requiredStartCount;
+    [HideInInspector]
+    public bool isDelivered = false;
+    [HideInInspector]
+    public int currentCount;
     private void Awake()
     {
         standPosition = GameObject.Find(Consts.FlatbedMovementPositions.STAND_POSITION).transform;
@@ -53,13 +55,13 @@ public class FlatbedController : MonoBehaviour
         currentState = new FlatbedAcceleratingState();
         currentState.EnterState(this);
 
-        requiredItemCount = Random.Range(minRequiredItemCount, maxRequiredItemCount);
-        requiredStartCount = requiredItemCount;
+        requiredCountItem = Random.Range(minRequiredItemCount, maxRequiredItemCount);
+        currentCount = requiredCountItem;
 
         if (!requiredItemList.ContainsKey(requiredItemName))
-            requiredItemList.Add(requiredItemName, requiredItemCount);
+            requiredItemList.Add(requiredItemName, requiredCountItem);
         
-        HasTruckLoaded();
+        HasTruckDelivered();
     }
 
     public void SetState(IFlatbedState newState)
@@ -90,7 +92,7 @@ public class FlatbedController : MonoBehaviour
             strap.SetActive(isLoaded);
         }
     }
-    public bool CanBeGiven(PlayerCarryController player)
+    public bool CanBeTaken(PlayerCarryController player)
     {
         if (player.IsCarrying() && requiredItemList.ContainsKey(player.GetCarriedObjectName()))
             return true;
@@ -100,32 +102,39 @@ public class FlatbedController : MonoBehaviour
 
     public void DecreaseRequiredItemCount()
     {
-        if (requiredItemCount > 0)
+        if (requiredCountItem > 0)
         {
-            requiredItemCount--;
-            requiredItemList[requiredItemName] = requiredItemCount;
+            currentCount--;
+            requiredItemList[requiredItemName] = currentCount;
+        }
+        else
+        {
+            currentCount = 0;
+            requiredItemList.Clear();
         }
     }
 
-    public bool HasTruckLoaded()
+    public bool HasTruckDelivered()
     {
-        if (requiredStartCount == requiredItemCount)
+        if (currentCount == requiredCountItem)
         {
             Debug.Log("Kamyona hiç eþya yüklenmedi");
             ActivateLoadedVisual(false);
-            return false;
+            isDelivered = false;
         }
-        else if( requiredItemCount == 0)
+        else if(currentCount == 0)
         {
             Debug.Log("Kamyona tüm eþyalar yüklenmiþtir.");
-            return true;
+            isDelivered = true;
         }
         else
         {
             Debug.Log("Kamyona eþyalar yüklenmiþtir ancak hepsi deðil");
             ActivateLoadedVisual(true);
-            return false;
+            isDelivered = false;
         }
+
+        return isDelivered;
     }
 
     public void SetMovementPosition(Transform position)

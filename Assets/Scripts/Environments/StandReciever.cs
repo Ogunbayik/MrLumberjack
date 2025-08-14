@@ -5,7 +5,7 @@ using System;
 
 public class StandReciever : MonoBehaviour
 {
-    public event Action<FlatbedController> OnAllItemDelivered;
+    public event Action<FlatbedController> OnItemDelivered;
 
     private Stand stand;
 
@@ -30,13 +30,9 @@ public class StandReciever : MonoBehaviour
             flatbed = stand.GetFlatbed();
             if (flatbed != null)
             {
-                if (flatbed.CanBeGiven(player) && !flatbed.HasTruckLoaded())
+                if (flatbed.currentCount > 0 && flatbed.CanBeTaken(player))
                 {
                     ReceiveItemToFlatbed(player);
-                }
-                else if (flatbed.HasTruckLoaded())
-                {
-                    OnAllItemDelivered?.Invoke(flatbed);
                 }
             }
             else
@@ -52,8 +48,7 @@ public class StandReciever : MonoBehaviour
         if(receiverTime <= 0)
         {
             player.DestroyLastListObject();
-            flatbed.DecreaseRequiredItemCount();
-            stand.UpdateUI(flatbed.requiredItemCount);
+            OnItemDelivered?.Invoke(flatbed);
             receiverTime = maxReceiverTime;
         }
     }

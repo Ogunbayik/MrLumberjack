@@ -2,9 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-
+using System;
 public class BuildingManager : MonoBehaviour
 {
+    public event Action OnBuildingUnlocked;
+
     private List<GameObject> produceList;
 
     [Header("Building Settings")]
@@ -20,12 +22,16 @@ public class BuildingManager : MonoBehaviour
     [SerializeField] private Image imageMaterial;
     [SerializeField] private Sprite spriteMaterial;
     [SerializeField] private Vector3 imageRotation;
+    [Header("Unlock Settings")]
+    [SerializeField] private int buildingCost;
+    [SerializeField] private bool isUnlocked;
 
     private int materialCount;
 
     private float produceTimer;
 
     private bool isProducing = false;
+    
     private void Awake()
     {
         produceList = new List<GameObject>();
@@ -44,6 +50,8 @@ public class BuildingManager : MonoBehaviour
         imageMaterial.sprite = spriteMaterial;
         imageMaterial.transform.rotation = Quaternion.Euler(imageRotation);
         produceTimer = maxProduceTimer;
+
+        ActivateAllChildren();
     }
 
     private void ProduceItem()
@@ -62,8 +70,6 @@ public class BuildingManager : MonoBehaviour
                     item.transform.position = new Vector3(producePosition.position.x - itemOffset, producePosition.position.y + (item.transform.localScale.y / 2), producePosition.position.z);
                 else
                     item.transform.position = new Vector3(producePosition.position.x, producePosition.position.y + (item.transform.localScale.y / 2), producePosition.position.z - itemOffset);
-
-
 
                 materialCount -= materialNeededCount;
                 produceTimer = maxProduceTimer;
@@ -102,13 +108,43 @@ public class BuildingManager : MonoBehaviour
         else
             return false;
     }
+    public void ActivateAllChildren()
+    {
+        foreach (Transform child in this.transform)
+        {
+            if(isUnlocked)
+            {
+                if (child.name == "ItemReceiver")
+                    child.gameObject.SetActive(true);
+                else
+                    child.gameObject.SetActive(false);
+            }
+            else
+            {
+                child.gameObject.SetActive(true);
+            }
+        }
+    }
     public string GetMaterialNeededName()
     {
         return materialNeededName;
     }
-
     public List<GameObject> GetProduceList()
     {
         return produceList;
+    }
+
+    public void UnlockBuilding()
+    {
+        OnBuildingUnlocked?.Invoke();
+    }
+    public bool IsUnlocked()
+    {
+        return isUnlocked;
+    }
+
+    public int GetBuildCost()
+    {
+        return buildingCost;
     }
 }
