@@ -8,6 +8,7 @@ public class MoneyManager : MonoBehaviour
 {
     public static MoneyManager Instance;
 
+    [Header("UI Settings")]
     [SerializeField] private Image coinImage;
     [SerializeField] private Sprite coinSprite;
     [SerializeField] private TextMeshProUGUI coinText;
@@ -32,19 +33,16 @@ public class MoneyManager : MonoBehaviour
     {
         InitializeMoneyUI();
     }
-
     public void InitializeMoneyUI()
     {
         coinImage.sprite = coinSprite;
-        currentMoney = 50;
+        currentMoney = 10;
         coinText.text = currentMoney.ToString();
     }
-
     public void UpdateMoneyUI()
     {
         coinText.text = currentMoney.ToString();
     }
-
     public void AddMoney(int money)
     {
         currentMoney += money;
@@ -53,7 +51,6 @@ public class MoneyManager : MonoBehaviour
     {
         currentMoney -= money;
     }
-
     public int GetCurrentMoney()
     {
         return currentMoney;

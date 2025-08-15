@@ -19,4 +19,12 @@ public class Consts
         public const string STAND_POSITION = "StandPosition";
         public const string EXIT_POSITION = "ExitPosition";
     }
+    public struct BuildingAnimationParameter
+    {
+        public const string UNLOCKED = "isUnlocked";
+    }
+    public struct StandAnimationParameter
+    {
+        public const string FLATBED_ARRIVED = "isFlatbedArrived";
+    }
 }

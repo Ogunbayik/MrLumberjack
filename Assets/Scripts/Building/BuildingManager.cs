@@ -10,6 +10,7 @@ public class BuildingManager : MonoBehaviour
     private List<GameObject> produceList;
 
     [Header("Building Settings")]
+    [SerializeField] private List<GameObject> initialInactiveList = new List<GameObject>();
     [SerializeField] private string materialNeededName;
     [SerializeField] private int materialNeededCount;
     [Header("Produce Settings")]
@@ -19,13 +20,15 @@ public class BuildingManager : MonoBehaviour
     [SerializeField] private int maxProduceCount;
     [SerializeField] private float distanceBetweenItem;
     [Header("UI Settings")]
-    [SerializeField] private Image imageMaterial;
+    [SerializeField] private Image imageBuilding;
+    [SerializeField] private Image imageItemReciever;
+    [SerializeField] private Sprite spriteCoin;
     [SerializeField] private Sprite spriteMaterial;
     [SerializeField] private Vector3 imageRotation;
     [Header("Unlock Settings")]
     [SerializeField] private int buildingCost;
     [SerializeField] private bool isUnlocked;
-
+    
     private int materialCount;
 
     private float produceTimer;
@@ -40,20 +43,40 @@ public class BuildingManager : MonoBehaviour
     {
         InitializeBuilding();
     }
+    private void InitializeBuilding()
+    {
+        produceTimer = maxProduceTimer;
+        SetInitialObjects(false);
+        UpdateBuildingUI();
+        ToggleBuildingPanel(false);
+        ToggleReceiverPanel(false);
+    }
     void Update()
     {
         ProduceItem();
     }
-
-    private void InitializeBuilding()
+    public void SetInitialObjects(bool isActive)
     {
-        imageMaterial.sprite = spriteMaterial;
-        imageMaterial.transform.rotation = Quaternion.Euler(imageRotation);
-        produceTimer = maxProduceTimer;
-
-        ActivateAllChildren();
+        foreach (var obj in initialInactiveList)
+        {
+            obj.gameObject.SetActive(isActive);
+        }
     }
-
+    private void UpdateBuildingUI()
+    {
+        imageBuilding.sprite = spriteMaterial;
+        imageBuilding.transform.rotation = Quaternion.Euler(imageRotation);
+        imageItemReciever.sprite = spriteCoin;
+        imageItemReciever.transform.rotation = Quaternion.Euler(imageRotation);
+    }
+    public void ToggleBuildingPanel(bool isActive)
+    {
+        imageBuilding.gameObject.SetActive(isActive);
+    }
+    public void ToggleReceiverPanel(bool isActive)
+    {
+        imageItemReciever.gameObject.SetActive(isActive);
+    }
     private void ProduceItem()
     {
         if (isProducing)
@@ -108,41 +131,26 @@ public class BuildingManager : MonoBehaviour
         else
             return false;
     }
-    public void ActivateAllChildren()
+    public List<GameObject> GetProduceList()
     {
-        foreach (Transform child in this.transform)
-        {
-            if(isUnlocked)
-            {
-                if (child.name == "ItemReceiver")
-                    child.gameObject.SetActive(true);
-                else
-                    child.gameObject.SetActive(false);
-            }
-            else
-            {
-                child.gameObject.SetActive(true);
-            }
-        }
+        return produceList;
+    }
+    public void UnlockBuilding()
+    {
+        OnBuildingUnlocked?.Invoke();
+    }
+    public void SetUnlocked(bool isUnlock)
+    {
+        this.isUnlocked = isUnlock;
     }
     public string GetMaterialNeededName()
     {
         return materialNeededName;
     }
-    public List<GameObject> GetProduceList()
-    {
-        return produceList;
-    }
-
-    public void UnlockBuilding()
-    {
-        OnBuildingUnlocked?.Invoke();
-    }
     public bool IsUnlocked()
     {
         return isUnlocked;
     }
-
     public int GetBuildCost()
     {
         return buildingCost;

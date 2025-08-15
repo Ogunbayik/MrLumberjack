@@ -7,15 +7,23 @@ using TMPro;
 public class Stand : MonoBehaviour
 {
     private StandReciever standReciever;
+    private StandAnimationController standAnimator;
 
     [Header("UI Settings")]
-    [SerializeField] private Image standImage;
-    [SerializeField] private TextMeshProUGUI countText;
+    [SerializeField] private Image imageReceiveMaterial;
+    [SerializeField] private Image imageActivate;
+    [SerializeField] private Sprite notWorkingSprite;
+    [SerializeField] private TextMeshProUGUI materialCountText;
 
     private FlatbedController flatbed;
     private void Awake()
     {
         standReciever = GetComponentInChildren<StandReciever>();
+        standAnimator = GetComponent<StandAnimationController>();
+    }
+    private void Start()
+    {
+        imageActivate.sprite = notWorkingSprite;
         ShowItemCounterUI(false);
     }
     private void OnEnable()
@@ -39,9 +47,12 @@ public class Stand : MonoBehaviour
             var money = flatbed.itemMoney * flatbed.requiredCountItem;
             MoneyManager.Instance.AddMoney(money);
             MoneyManager.Instance.UpdateMoneyUI();
+            ShowItemCounterUI(false);
+            ShowNotWorkingUI(true);
+            standAnimator.SetFlatbedArrivedAnimation(false);
         }
 
-        UpdateRequiredCount(flatbed.currentCount);
+        UpdateRequiredCountText(flatbed.currentCount);
     }
 
     private void OnTriggerEnter(Collider other)
@@ -49,30 +60,34 @@ public class Stand : MonoBehaviour
         if(other.gameObject.TryGetComponent<FlatbedController>(out FlatbedController flatbed))
         {
             this.flatbed = flatbed;
-            standImage.sprite = flatbed.materialSprite;
-            countText.text = flatbed.requiredCountItem.ToString();
+            imageReceiveMaterial.sprite = flatbed.materialSprite;
+            materialCountText.text = flatbed.requiredCountItem.ToString();
 
+            standAnimator.SetFlatbedArrivedAnimation(true);
             ShowItemCounterUI(true);
+            ShowNotWorkingUI(false);
         }
     }
     private void OnTriggerExit(Collider other)
     {
         if (other.gameObject.GetComponent<FlatbedController>())
         {
-            standImage.sprite = null;
+            imageReceiveMaterial.sprite = null;
             flatbed = null;
-            ShowItemCounterUI(false);
         }
     }
-
     public void ShowItemCounterUI(bool isActive)
     {
-        standImage.gameObject.SetActive(isActive);
-        countText.gameObject.SetActive(isActive);
+        imageReceiveMaterial.gameObject.SetActive(isActive);
+        materialCountText.gameObject.SetActive(isActive);
     }
-    public void UpdateRequiredCount(int count)
+    public void ShowNotWorkingUI(bool isActive)
     {
-        countText.text = count.ToString();
+        imageActivate.gameObject.SetActive(isActive);
+    }
+    public void UpdateRequiredCountText(int count)
+    {
+        materialCountText.text = count.ToString();
     }
     public FlatbedController GetFlatbed()
     {
