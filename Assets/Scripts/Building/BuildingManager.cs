@@ -96,7 +96,7 @@ public class BuildingManager : MonoBehaviour
 
                 materialCount -= materialNeededCount;
                 produceTimer = maxProduceTimer;
-                IsProducing();
+                UpdateProduceStatus();
             }
         }
         else
@@ -115,21 +115,16 @@ public class BuildingManager : MonoBehaviour
         else
             return true;
     }
-    public bool IsProducing()
+    public void UpdateProduceStatus()
     {
         if (materialCount >= materialNeededCount && produceList.Count < maxProduceCount)
             isProducing = true;
         else
             isProducing = false;
-
-        return isProducing;
     }
     public bool HasRequiredMaterial(PlayerCarryController player)
     {
-        if (player.GetCarriedObjectName() == materialNeededName)
-            return true;
-        else
-            return false;
+        return player.GetCarriedObjectName() == materialNeededName;
     }
     public List<GameObject> GetProduceList()
     {

@@ -1,5 +1,5 @@
 
 public interface IChopable 
 {
-    public void Chop();
+    public void Chop(int damageAmount);
 }

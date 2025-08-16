@@ -13,7 +13,7 @@ public class MoneyManager : MonoBehaviour
     [SerializeField] private Sprite coinSprite;
     [SerializeField] private TextMeshProUGUI coinText;
     
-    private int currentMoney;
+    public int currentMoney;
     private void Awake()
     {
         #region Singleton
@@ -36,7 +36,6 @@ public class MoneyManager : MonoBehaviour
     public void InitializeMoneyUI()
     {
         coinImage.sprite = coinSprite;
-        currentMoney = 10;
         coinText.text = currentMoney.ToString();
     }
     public void UpdateMoneyUI()

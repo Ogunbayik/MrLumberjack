@@ -53,7 +53,7 @@ public class ItemGiver : MonoBehaviour
             lastProduceItem.transform.rotation = player.GetCarryPosition().rotation;
 
             produceList.Remove(lastProduceItem);
-            buildingManager.IsProducing();
+            buildingManager.UpdateProduceStatus();
         }
         else
         {

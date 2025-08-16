@@ -2,18 +2,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Log : MonoBehaviour, ICarryable
+public class Stone : MonoBehaviour, ICarryable
 {
-    [SerializeField] private ItemDataSO itemSO;
+    [SerializeField] private ItemDataSO itemDataSO;
+    public string GetItemName => itemDataSO.itemName;
+
     public GameObject GetCarriableObject => this.gameObject;
-    public float GetItemSpace => itemSO.itemBetweenSpace;
-    public string GetItemName => itemSO.itemName;
+
+    public float GetItemSpace => itemDataSO.itemBetweenSpace;
 
     public void PickUp(PlayerCarryController player)
     {
         player.Carry(this);
     }
-
-    
-
 }

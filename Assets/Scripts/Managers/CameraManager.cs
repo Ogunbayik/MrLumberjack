@@ -7,12 +7,13 @@ public class CameraManager : MonoBehaviour
 {
     public static CameraManager Instance;
 
-    private BuildingManager itemReceiver = null;
-
+    [Header("Game Cameras")]
     [SerializeField] private CinemachineVirtualCamera gameCamera;
     [SerializeField] private CinemachineVirtualCamera cinematicCamera;
+    [Header("Camera Settings")]
+    [SerializeField] private Vector3 cameraOffset;
+    [SerializeField] private Vector3 cameraRotation;
 
-    private CinemachineVirtualCamera currentCamera;
     private void Awake()
     {
         #region Singleton
@@ -27,26 +28,21 @@ public class CameraManager : MonoBehaviour
         }
         #endregion
     }
-    void Start()
+    public void InitializeCinematicCamera(Transform position)
     {
-        currentCamera = gameCamera;
+        cinematicCamera.m_Follow = position.transform;
+        cinematicCamera.m_LookAt = position.transform;
+        cinematicCamera.transform.position = position.position + cameraOffset;
+        cinematicCamera.transform.rotation = Quaternion.Euler(cameraRotation);
     }
-
-    public void InitializeCinematicCamera(Transform lookPosition)
+    public void ActivateCinematicCamera()
     {
-        var offsetCamera = new Vector3(0, 5f, -3f);
-        cinematicCamera.transform.position = lookPosition.position + offsetCamera;
-        cinematicCamera.m_LookAt = itemReceiver.transform;
+        cinematicCamera.gameObject.SetActive(true);
+        gameCamera.gameObject.SetActive(false);
     }
-    public void ChangeCamera()
+    public void ActivateGameCamera()
     {
-        if (currentCamera == gameCamera)
-            currentCamera = cinematicCamera;
-        else
-            currentCamera = gameCamera;
-    }
-    public void SetItemReceiver(BuildingManager itemReceiver)
-    {
-        this.itemReceiver = itemReceiver;
+        gameCamera.gameObject.SetActive(true);
+        cinematicCamera.gameObject.SetActive(false);
     }
 }

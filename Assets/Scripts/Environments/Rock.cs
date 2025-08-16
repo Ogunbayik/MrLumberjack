@@ -2,10 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Tree : GatherableResource, IChopable
+public class Rock : GatherableResource, IMineable
 {
-    public void Chop(int damageAmount)
+    public void Mine(int damageAmount)
     {
         base.OnHitResource(damageAmount);
     }
+
 }

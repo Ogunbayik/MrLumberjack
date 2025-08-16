@@ -77,12 +77,10 @@ public class PlayerCarryController : MonoBehaviour
     {
         return carriedObjectName;
     }
-
     public List<GameObject> GetCarriedList()
     {
         return carriedList;
     }
-
     public bool IsCarrying()
     {
         if (carriedList.Count > 0)
@@ -92,7 +90,6 @@ public class PlayerCarryController : MonoBehaviour
 
         return isCarrying;
     }
-
     public Transform GetCarryPosition()
     {
         return carryPosition;

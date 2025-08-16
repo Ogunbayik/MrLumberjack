@@ -78,6 +78,12 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    public void SetPlayerController(bool isActive)
+    {
+        movementDirection = Vector3.zero;
+        this.enabled = isActive;
+    }
+
     public bool IsMoving()
     {
         if (movementDirection != Vector3.zero)

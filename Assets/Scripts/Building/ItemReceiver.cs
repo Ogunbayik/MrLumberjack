@@ -5,10 +5,9 @@ using System;
 
 public class ItemReceiver : MonoBehaviour
 {
-    public event Action OnBuildingUnlocking;
-
     private BuildingManager buildingManager;
     private BuildingAnimationController buildingAnimator;
+    private PlayerController playerController;
 
     [SerializeField] private Sprite coinSprite;
     [SerializeField] private float maxReceiveTime;
@@ -30,14 +29,15 @@ public class ItemReceiver : MonoBehaviour
     }
     private void BuildingManager_OnBuildingUnlocked()
     {
-        StartCoroutine(nameof(UnlockingBuilding));
+        StartCoroutine(nameof(UnlockBuilding));
     }
     private void OnTriggerEnter(Collider other)
     {
-        if(other.gameObject.GetComponent<PlayerCarryController>())
+        playerController = other.gameObject.GetComponent<PlayerController>();
+
+        if(playerController)
         {
             receiveTimer = maxReceiveTime;
-            CameraManager.Instance.SetItemReceiver(buildingManager);
 
             if (!buildingManager.IsUnlocked())
                 buildingManager.UnlockBuilding();
@@ -56,7 +56,7 @@ public class ItemReceiver : MonoBehaviour
         if (other.gameObject.GetComponent<PlayerCarryController>())
         {
             buildingManager.ToggleReceiverPanel(false);
-            CameraManager.Instance.SetItemReceiver(null);
+            playerController = null;
         }
     }
     private void ReceiveItem(PlayerCarryController player)
@@ -66,33 +66,46 @@ public class ItemReceiver : MonoBehaviour
         if(receiveTimer <= 0)
         {
             buildingManager.IncreaseMaterialCount();
-            buildingManager.IsProducing();
+            buildingManager.UpdateProduceStatus();
 
             player.DestroyLastListObject();
             receiveTimer = maxReceiveTime;
         }
     }
-    private IEnumerator UnlockingBuilding()
+    private IEnumerator UnlockBuilding()
     {
         var currentMoney = MoneyManager.Instance.GetCurrentMoney();
         var buildingCost = buildingManager.GetBuildCost();
 
-        if(currentMoney < buildingCost)
+        if (currentMoney < buildingCost)
         {
             Debug.Log("Put need more money warnings for player");
             buildingManager.ToggleReceiverPanel(true);
             yield break;
         }
 
-        OnBuildingUnlocking?.Invoke();
+        var cinematicTransitionTime = 2f;
+        playerController.SetPlayerController(false);
+        CameraManager.Instance.InitializeCinematicCamera(this.transform);
+        CameraManager.Instance.ActivateCinematicCamera();
         Debug.Log("Total spend money is " + buildingCost);
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(cinematicTransitionTime);
+
+        var unlockAnimationDuration = 2.5f;
         buildingAnimator.TriggerUnlockAnimation();
-        yield return new WaitForSeconds(2.5f);
+
+        yield return new WaitForSeconds(unlockAnimationDuration);
+
+        var playerControlReactivationDelay = 2f;
         Debug.Log("Building is Unlocked");
+        CameraManager.Instance.ActivateGameCamera();
         buildingManager.SetInitialObjects(true);
         buildingManager.ToggleBuildingPanel(true);
         buildingManager.SetUnlocked(true);
+
+        yield return new WaitForSeconds(playerControlReactivationDelay);
+
+        playerController.SetPlayerController(true);
     }
 
 

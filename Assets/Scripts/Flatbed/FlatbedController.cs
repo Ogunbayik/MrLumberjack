@@ -102,7 +102,7 @@ public class FlatbedController : MonoBehaviour
 
     public void DecreaseRequiredItemCount()
     {
-        if (requiredCountItem > 0)
+        if (currentCount > 0)
         {
             currentCount--;
             requiredItemList[requiredItemName] = currentCount;

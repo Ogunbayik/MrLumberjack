@@ -8,7 +8,7 @@ public class Axe : MonoBehaviour
     {
         if(other.gameObject.TryGetComponent<IChopable>(out IChopable chopable))
         {
-            chopable.Chop();
+            chopable.Chop(Consts.PlayerToolAmount.HIT_AMOUNT);
         }
     }
 }

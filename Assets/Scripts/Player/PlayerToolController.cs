@@ -48,42 +48,40 @@ public class PlayerToolController : MonoBehaviour
         var axeIndex = 0;
         var pickaxeIndex = 1;
 
-        if (Input.GetKeyDown(KeyCode.E))
+        switch (currentTool)
         {
-            switch(currentTool)
-            {
-                case Tools.None:
-                    currentTool = Tools.Axe;
+            case Tools.None:
+                currentTool = Tools.Axe;
 
-                    allTools[axeIndex].SetActive(true);
-                    allTools[pickaxeIndex].SetActive(false);
+                allTools[axeIndex].SetActive(true);
+                allTools[pickaxeIndex].SetActive(false);
 
-                    isChopping = true;
-                    isMining = false;
-                    isCarrying = false;
-                    break;
-                case Tools.Axe:
-                    currentTool = Tools.Pickaxe;
+                isChopping = true;
+                isMining = false;
+                isCarrying = false;
+                break;
+            case Tools.Axe:
+                currentTool = Tools.Pickaxe;
 
-                    allTools[axeIndex].SetActive(false);
-                    allTools[pickaxeIndex].SetActive(true);
+                allTools[axeIndex].SetActive(false);
+                allTools[pickaxeIndex].SetActive(true);
 
-                    isChopping = false;
-                    isMining = true;
-                    isCarrying = false;
-                    break;
-                case Tools.Pickaxe:
-                    currentTool = Tools.None;
+                isChopping = false;
+                isMining = true;
+                isCarrying = false;
+                break;
+            case Tools.Pickaxe:
+                currentTool = Tools.None;
 
-                    allTools[axeIndex].SetActive(false);
-                    allTools[pickaxeIndex].SetActive(false);
+                allTools[axeIndex].SetActive(false);
+                allTools[pickaxeIndex].SetActive(false);
 
-                    isChopping = false;
-                    isMining = false;
-                    isCarrying = true;
-                    break;
-            }
+                isChopping = false;
+                isMining = false;
+                isCarrying = true;
+                break;
         }
+        
     }
 
     public BoxCollider GetAxeCollider()

@@ -27,4 +27,8 @@ public class Consts
     {
         public const string FLATBED_ARRIVED = "isFlatbedArrived";
     }
+    public struct PlayerToolAmount
+    {
+        public const int HIT_AMOUNT = 1;
+    }
 }

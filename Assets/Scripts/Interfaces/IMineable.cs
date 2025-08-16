@@ -1,5 +1,5 @@
 
 public interface IMineable
 {
-    public void Mine();
+    public void Mine(int damageAmount);
 }
