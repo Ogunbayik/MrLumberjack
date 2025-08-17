@@ -1,58 +1,40 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
-using System;
-public class BuildingManager : MonoBehaviour
-{
-    public event Action OnBuildingUnlocked;
 
+public class Building : MonoBehaviour
+{
     private List<GameObject> produceList;
 
-    [Header("Building Settings")]
     [SerializeField] private string buildingID;
-    [SerializeField] private List<GameObject> initialInactiveList = new List<GameObject>();
-    [SerializeField] private int materialNeededCount;
+    [SerializeField] private List<GameObject> initialInactiveList;
     [SerializeField] private ItemDataSO requiredItemSO;
     [SerializeField] private ItemDataSO productItemSO;
-    [Header("Produce Settings")]
     [SerializeField] private Transform producePosition;
+    [SerializeField] private int materialNeededCount;
     [SerializeField] private int maxProduceTimer;
     [SerializeField] private int maxProduceCount;
-    [Header("UI Settings")]
-    [SerializeField] private Image imageBuilding;
-    [SerializeField] private Image imageItemReciever;
-    [SerializeField] private Sprite spriteCoin;
-    [SerializeField] private Vector3 imageRotation;
-    [Header("Unlock Settings")]
-    [SerializeField] private int buildingCost;
-    [SerializeField] private bool isUnlocked;
-    
-    private int materialCount;
 
     private float produceTimer;
 
-    private bool isProducing = false;
-    
-    private void Awake()
-    {
-        produceList = new List<GameObject>();
-    }
-    private void Start()
+    private int materialCount;
+
+    private bool isProduce;
+    void Start()
     {
         InitializeBuilding();
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        if (isProduce)
+            ProduceItem();
     }
     private void InitializeBuilding()
     {
         produceTimer = maxProduceTimer;
         SetInitialObjects(false);
-        ToggleBuildingPanel(false);
-        ToggleReceiverPanel(false);
-        UpdateBuildingUI();
-    }
-    void Update()
-    {
-        ProduceItem();
     }
     public void SetInitialObjects(bool isActive)
     {
@@ -61,28 +43,13 @@ public class BuildingManager : MonoBehaviour
             obj.gameObject.SetActive(isActive);
         }
     }
-    private void UpdateBuildingUI()
-    {
-        imageBuilding.sprite = requiredItemSO.itemSprite;
-        imageBuilding.transform.rotation = Quaternion.Euler(imageRotation);
-        imageItemReciever.sprite = spriteCoin;
-        imageItemReciever.transform.rotation = Quaternion.Euler(imageRotation);
-    }
-    public void ToggleBuildingPanel(bool isActive)
-    {
-        imageBuilding.gameObject.SetActive(isActive);
-    }
-    public void ToggleReceiverPanel(bool isActive)
-    {
-        imageItemReciever.gameObject.SetActive(isActive);
-    }
     private void ProduceItem()
     {
-        if (isProducing)
+        if (isProduce)
         {
             produceTimer -= Time.deltaTime;
 
-            if(produceTimer <= 0)
+            if (produceTimer <= 0)
             {
                 var productItem = Instantiate(productItemSO.itemPrefab, producePosition);
                 produceList.Add(productItem);
@@ -125,9 +92,9 @@ public class BuildingManager : MonoBehaviour
     public void UpdateProduceStatus()
     {
         if (materialCount >= materialNeededCount && produceList.Count < maxProduceCount)
-            isProducing = true;
+            isProduce = true;
         else
-            isProducing = false;
+            isProduce = false;
     }
     public bool HasRequiredMaterial(PlayerCarryController player)
     {
@@ -137,21 +104,9 @@ public class BuildingManager : MonoBehaviour
     {
         return produceList;
     }
-    public void UnlockBuilding()
+    public ItemDataSO GetRequiredItemSO()
     {
-        OnBuildingUnlocked?.Invoke();
-    }
-    public void SetUnlocked(bool isUnlock)
-    {
-        this.isUnlocked = isUnlock;
-    }
-    public bool IsUnlocked()
-    {
-        return isUnlocked;
-    }
-    public int GetBuildCost()
-    {
-        return buildingCost;
+        return requiredItemSO;
     }
     public ItemDataSO GetProduceItemSO()
     {

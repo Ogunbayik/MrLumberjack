@@ -749,7 +749,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxGiveTime: 2
-  distanceBetweenItem: 10
 --- !u!1 &1373260022000122368
 GameObject:
   m_ObjectHideFlags: 0
@@ -1202,7 +1201,9 @@ GameObject:
   - component: {fileID: 1258264761096775066}
   - component: {fileID: 2799438756046678591}
   - component: {fileID: 89348507899485941}
-  - component: {fileID: 1890827460524703535}
+  - component: {fileID: 5589855730379766628}
+  - component: {fileID: 5073940394469538270}
+  - component: {fileID: 3443504659028741750}
   - component: {fileID: 1890827460524703532}
   - component: {fileID: 1890827460524703534}
   - component: {fileID: 1890827460524703533}
@@ -1282,7 +1283,7 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &1890827460524703535
+--- !u!114 &5589855730379766628
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1291,26 +1292,49 @@ MonoBehaviour:
   m_GameObject: {fileID: 1890827460524703520}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e240e96d04413434794c347410be2e59, type: 3}
+  m_Script: {fileID: 11500000, guid: 87f2ccf4be58578408a9d7bdf9cdea84, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  buildingID: BUILDING_LOG
   initialInactiveList:
   - {fileID: 1373260021875992713}
   - {fileID: 1373260021637118049}
   - {fileID: 1373260020635655160}
-  materialNeededName: Log
-  materialNeededCount: 5
-  producePrefab: {fileID: 2037526512360942275, guid: a73d46877ddfa3e469fb2cf2f5512257, type: 3}
+  requiredItemSO: {fileID: 11400000, guid: d896be6d668da7f49a1adb421dd6721b, type: 2}
+  productItemSO: {fileID: 11400000, guid: 8cb18baad1fec8d4baeff1cb7235b8b5, type: 2}
   producePosition: {fileID: 1373260021637118048}
+  materialNeededCount: 5
   maxProduceTimer: 10
   maxProduceCount: 5
-  distanceBetweenItem: 4
+--- !u!114 &5073940394469538270
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1890827460524703520}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b483247e0a29d0c498ceb852dfea83d6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
   imageBuilding: {fileID: 1373260022380884358}
   imageItemReciever: {fileID: 1373260020978256080}
   spriteCoin: {fileID: 21300000, guid: 1b1126e796aa3c04182358fa77edf418, type: 3}
-  spriteMaterial: {fileID: 21300000, guid: b09916c63680f22419b8343e91765964, type: 3}
   imageRotation: {x: 45, y: 0, z: 0}
-  buildingCost: 20
+--- !u!114 &3443504659028741750
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1890827460524703520}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9f9c863c26d768d478607878c20f62c2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  buildingCost: 5
   isUnlocked: 0
 --- !u!114 &1890827460524703532
 MonoBehaviour:

@@ -5,11 +5,10 @@ using System;
 
 public class StandReciever : MonoBehaviour
 {
-    public event Action<FlatbedController> OnItemDelivered;
+    public event Action<FlatbedItemHolder> OnItemDelivered;
 
     private Stand stand;
-
-    private FlatbedController flatbed;
+    private FlatbedItemHolder flatbeditemHolder;
 
     [SerializeField] private float maxReceiverTime;
 
@@ -27,12 +26,21 @@ public class StandReciever : MonoBehaviour
     {
         if (other.gameObject.TryGetComponent<PlayerCarryController>(out PlayerCarryController player))
         {
-            flatbed = stand.GetFlatbed();
-            if (flatbed != null)
+            flatbeditemHolder = stand.GetFlatbedItemHolder();
+
+            if (flatbeditemHolder != null)
             {
-                if (flatbed.currentCount > 0 && flatbed.CanBeTaken(player))
+                if (!flatbeditemHolder.IsLoaded())
                 {
-                    ReceiveItemToFlatbed(player);
+                    if (flatbeditemHolder.CanPickUpItem(player))
+                        ReceiveItemToFlatbed(player);
+                    else
+                        Debug.Log("Player need to find required item");
+                }
+                else
+                {
+                    ResetReceiveTime();
+                    Debug.Log("Player can't give more item");
                 }
             }
             else
@@ -47,9 +55,14 @@ public class StandReciever : MonoBehaviour
 
         if(receiverTime <= 0)
         {
+            OnItemDelivered?.Invoke(flatbeditemHolder);
             player.DestroyLastListObject();
-            OnItemDelivered?.Invoke(flatbed);
-            receiverTime = maxReceiverTime;
+            player.UpdateCarryingStatus();
+            ResetReceiveTime();
         }
+    }
+    private void ResetReceiveTime()
+    {
+        receiverTime = maxReceiverTime;
     }
 }

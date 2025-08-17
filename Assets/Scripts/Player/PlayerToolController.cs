@@ -6,6 +6,7 @@ public class PlayerToolController : MonoBehaviour
 {
     private PlayerStateController stateController;
     private PlayerCarryController carryController;
+    private PlayerInput playerInput;
 
     private enum Tools
     {
@@ -16,6 +17,7 @@ public class PlayerToolController : MonoBehaviour
 
     private Tools currentTool;
 
+    [Header("Tool Settings")]
     [SerializeField] private GameObject[] allTools;
 
     private bool isChopping = false;
@@ -25,11 +27,21 @@ public class PlayerToolController : MonoBehaviour
     {
         stateController = GetComponent<PlayerStateController>();
         carryController = GetComponent<PlayerCarryController>();
+        playerInput = GetComponent<PlayerInput>();
     }
     void Start()
     {
-        currentTool = Tools.None;
+        InitializeTool();
+    }
 
+    private void InitializeTool()
+    {
+        currentTool = Tools.None;
+        DeactiveAllTools();
+    }
+
+    private void DeactiveAllTools()
+    {
         for (int i = 0; i < allTools.Length; i++)
         {
             allTools[i].SetActive(false);
@@ -38,10 +50,8 @@ public class PlayerToolController : MonoBehaviour
 
     private void Update()
     {
-        if (IsToolSwitchable() && Input.GetKeyDown(KeyCode.E))
-        {
+        if (IsToolSwitchable() && playerInput.PressedSwithKey())
             ChangeNextTool();
-        }
     }
     private void ChangeNextTool()
     {
@@ -83,7 +93,6 @@ public class PlayerToolController : MonoBehaviour
         }
         
     }
-
     public BoxCollider GetAxeCollider()
     {
         var axeIndex = 0;
@@ -91,7 +100,6 @@ public class PlayerToolController : MonoBehaviour
 
         return collider;
     }
-
     public BoxCollider GetPickaxeCollider()
     {
         var pickaxeIndex = 1;
@@ -99,30 +107,18 @@ public class PlayerToolController : MonoBehaviour
 
         return collider;
     }
-
     private bool IsToolSwitchable()
     {
-        if (stateController.currentState != PlayerStateController.States.Chopping && stateController.currentState != PlayerStateController.States.Mining)
-        {
-            if (carryController.IsCarrying())
-                return false;
-            else
-                return true;
-        }
-        else
-            return false;
+        return stateController.currentState == PlayerStateController.States.Idle || stateController.currentState == PlayerStateController.States.Moving;
     }
-
     public bool IsChopping()
     {
         return isChopping;
     }
-
     public bool IsMining()
     {
         return isMining;
     }
-
     public bool IsCarrying()
     {
         return isCarrying;

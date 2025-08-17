@@ -5,7 +5,9 @@ using System;
 
 public class ItemReceiver : MonoBehaviour
 {
-    private BuildingManager buildingManager;
+    private Building building;
+    private BuildingUIManager buildingUIManager;
+    private BuildingUnlockManager buildingUnlockManager;
     private BuildingAnimationController buildingAnimator;
     private PlayerController playerController;
 
@@ -16,18 +18,20 @@ public class ItemReceiver : MonoBehaviour
 
     private void Awake()
     {
-        buildingManager = GetComponentInParent<BuildingManager>();
+        building = GetComponentInParent<Building>();
+        buildingUnlockManager = GetComponentInParent<BuildingUnlockManager>();
+        buildingUIManager = GetComponentInParent<BuildingUIManager>();
         buildingAnimator = GetComponentInParent<BuildingAnimationController>();
     }
     private void OnEnable()
     {
-        buildingManager.OnBuildingUnlocked += BuildingManager_OnBuildingUnlocked;
+        buildingUnlockManager.OnBuildingUnlocked += BuildingUnlockManager_OnBuildingUnlocked;
     }
     private void OnDisable()
     {
-        buildingManager.OnBuildingUnlocked -= BuildingManager_OnBuildingUnlocked;
+        buildingUnlockManager.OnBuildingUnlocked -= BuildingUnlockManager_OnBuildingUnlocked;
     }
-    private void BuildingManager_OnBuildingUnlocked()
+    private void BuildingUnlockManager_OnBuildingUnlocked()
     {
         StartCoroutine(nameof(UnlockBuilding));
     }
@@ -37,17 +41,17 @@ public class ItemReceiver : MonoBehaviour
 
         if(playerController)
         {
-            receiveTimer = maxReceiveTime;
-
-            if (!buildingManager.IsUnlocked())
-                buildingManager.UnlockBuilding();
+            if (!buildingUnlockManager.IsUnlocked())
+                buildingUnlockManager.UnlockBuilding();
+            else
+                ResetReceiveTimer();
         }
     }
     private void OnTriggerStay(Collider other)
     {
         if(other.gameObject.TryGetComponent<PlayerCarryController>(out PlayerCarryController player))
         {
-            if (buildingManager.HasRequiredMaterial(player) && buildingManager.IsUnlocked())
+            if (building.HasRequiredMaterial(player) && buildingUnlockManager.IsUnlocked())
                 ReceiveItem(player);
         }
     }
@@ -55,32 +59,31 @@ public class ItemReceiver : MonoBehaviour
     {
         if (other.gameObject.GetComponent<PlayerCarryController>())
         {
-            buildingManager.ToggleReceiverPanel(false);
+            buildingUIManager.ToggleReceiverPanel(false);
             playerController = null;
         }
     }
     private void ReceiveItem(PlayerCarryController player)
     {
         receiveTimer -= Time.deltaTime;
-
         if(receiveTimer <= 0)
         {
-            buildingManager.IncreaseMaterialCount();
-            buildingManager.UpdateProduceStatus();
+            building.IncreaseMaterialCount();
+            building.UpdateProduceStatus();
 
             player.DestroyLastListObject();
-            receiveTimer = maxReceiveTime;
+            player.UpdateCarryingStatus();
+            ResetReceiveTimer();
         }
     }
     private IEnumerator UnlockBuilding()
     {
         var currentMoney = MoneyManager.Instance.GetCurrentMoney();
-        var buildingCost = buildingManager.GetBuildCost();
+        var buildingCost = buildingUnlockManager.GetBuildCost();
 
         if (currentMoney < buildingCost)
         {
-            Debug.Log("Put need more money warnings for player");
-            buildingManager.ToggleReceiverPanel(true);
+            buildingUIManager.ToggleReceiverPanel(true);
             yield break;
         }
 
@@ -88,7 +91,6 @@ public class ItemReceiver : MonoBehaviour
         playerController.SetPlayerController(false);
         CameraManager.Instance.InitializeCinematicCamera(this.transform);
         CameraManager.Instance.ActivateCinematicCamera();
-        Debug.Log("Total spend money is " + buildingCost);
         yield return new WaitForSeconds(cinematicTransitionTime);
 
         var unlockAnimationDuration = 2.5f;
@@ -97,17 +99,19 @@ public class ItemReceiver : MonoBehaviour
         yield return new WaitForSeconds(unlockAnimationDuration);
 
         var playerControlReactivationDelay = 2f;
-        Debug.Log("Building is Unlocked");
         CameraManager.Instance.ActivateGameCamera();
-        buildingManager.SetInitialObjects(true);
-        buildingManager.ToggleBuildingPanel(true);
-        buildingManager.SetUnlocked(true);
-
+        building.SetInitialObjects(true);
+        buildingUIManager.ToggleBuildingPanel(true);
+        buildingUnlockManager.SetUnlocked(true);
         yield return new WaitForSeconds(playerControlReactivationDelay);
 
         playerController.SetPlayerController(true);
     }
 
+    private void ResetReceiveTimer()
+    {
+        receiveTimer = maxReceiveTime;
+    }
 
 
 }

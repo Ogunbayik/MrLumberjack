@@ -6,8 +6,8 @@ public class ItemGiver : MonoBehaviour
 {
     private BuildingManager buildingManager;
 
+    [Header("Give Settings")]
     [SerializeField] private int maxGiveTime;
-    [SerializeField] private float distanceBetweenItem;
 
     private float giveTimer;
     private void Awake()
@@ -17,7 +17,7 @@ public class ItemGiver : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.GetComponent<PlayerCarryController>())
-            giveTimer = maxGiveTime / 2;
+            giveTimer = maxGiveTime;
     }
     private void OnTriggerStay(Collider other)
     {
@@ -27,14 +27,13 @@ public class ItemGiver : MonoBehaviour
 
             if(giveTimer <= 0)
             {
-                GiveItem(player);
-
+                GiveItemToPlayer(player);
                 giveTimer = maxGiveTime;
             }
         }
     }
 
-    private void GiveItem(PlayerCarryController player)
+    private void GiveItemToPlayer(PlayerCarryController player)
     {
         var produceList = buildingManager.GetProduceList();
 
@@ -42,11 +41,11 @@ public class ItemGiver : MonoBehaviour
         {
             var lastProduceItem = produceList[produceList.Count - 1];
             lastProduceItem.transform.SetParent(player.GetCarryPosition());
-            player.IsCarrying();
+            player.UpdateCarryingStatus();
 
             var carryPosition = player.GetCarryPosition();
             var carriedList = player.GetCarriedList();
-            var itemOffsetY = (float) carriedList.Count / distanceBetweenItem;
+            var itemOffsetY = (float)carriedList.Count / buildingManager.GetProduceItemSO().itemBetweenSpace;
 
             carriedList.Add(lastProduceItem);
             lastProduceItem.transform.position = new Vector3(carryPosition.position.x, carryPosition.position.y + itemOffsetY, carryPosition.position.z);

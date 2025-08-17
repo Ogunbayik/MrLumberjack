@@ -6,9 +6,10 @@ using UnityEngine;
 public class ItemDataSO : ScriptableObject
 {
     [Header("Item Settings")]
-    public string itemName;
     public GameObject itemPrefab;
+    public string itemName;
     public float itemBetweenSpace;
+    public int itemCost;
     [Header("UI Settings")]
     public Sprite itemSprite;
 }

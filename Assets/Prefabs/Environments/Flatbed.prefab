@@ -424,6 +424,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1493163275877008416}
   - component: {fileID: 2302211021676125849}
+  - component: {fileID: 9144062750208254794}
   - component: {fileID: 2302211021676125848}
   - component: {fileID: 2302211021676125851}
   m_Layer: 0
@@ -472,25 +473,33 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2dff5cc744538014da89490a2c9b0c9d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  deceleratingDistance: 6
+  maximumSpeed: 5
+  currentSpeed: 0
+  standPosition: {fileID: 0}
+  exitPosition: {fileID: 0}
+  movementPosition: {fileID: 0}
+--- !u!114 &9144062750208254794
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2302211021676125850}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 96902a15932eed54e8653e3268491afe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
   cargoVisual: {fileID: 5340200814795747188}
   strapsVisual:
   - {fileID: 8279848817400099185}
   - {fileID: 6272493469691146696}
-  requiredItemName: Log
-  minRequiredItemCount: 2
-  maxRequiredItemCount: 4
-  itemMoney: 5
-  deceleratingDistance: 6
-  maximumSpeed: 5
-  materialSprite: {fileID: 21300000, guid: b09916c63680f22419b8343e91765964, type: 3}
-  currentSpeed: 0
-  isLoaded: 0
-  requiredCountItem: 0
-  standPosition: {fileID: 0}
-  exitPosition: {fileID: 0}
-  movementPosition: {fileID: 0}
-  isDelivered: 0
-  currentCount: 0
+  allItemList:
+  - {fileID: 11400000, guid: d896be6d668da7f49a1adb421dd6721b, type: 2}
+  - {fileID: 11400000, guid: 1287e45d10bbc6341b928e9992d3a324, type: 2}
+  minimumRequiredCount: 3
+  maximumRequiredCount: 10
 --- !u!54 &2302211021676125848
 Rigidbody:
   m_ObjectHideFlags: 0

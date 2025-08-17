@@ -27,7 +27,7 @@ public class PlayerCarryController : MonoBehaviour
         {
             if (toolController.IsCarrying())
             {
-                IsCarrying();
+                UpdateCarryingStatus();
                 carryable.PickUp(this);
             }
             else
@@ -65,7 +65,7 @@ public class PlayerCarryController : MonoBehaviour
         }
         else
         {
-            IsCarrying();
+            UpdateCarryingStatus();
             ResetCarriedObjectName();
         }
     }
@@ -81,13 +81,17 @@ public class PlayerCarryController : MonoBehaviour
     {
         return carriedList;
     }
-    public bool IsCarrying()
+    public bool UpdateCarryingStatus()
     {
         if (carriedList.Count > 0)
             isCarrying = true;
         else
             isCarrying = false;
 
+        return isCarrying;
+    }
+    public bool IsCarrying()
+    {
         return isCarrying;
     }
     public Transform GetCarryPosition()

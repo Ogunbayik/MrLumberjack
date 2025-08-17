@@ -10,6 +10,7 @@ public class PlayerStateController : MonoBehaviour
     private PlayerController playerController;
     private PlayerCarryController playerCarryController;
     private PlayerToolController playerToolController;
+    private PlayerInput playerInput;
 
     public enum States
     {
@@ -28,6 +29,7 @@ public class PlayerStateController : MonoBehaviour
         playerController = GetComponent<PlayerController>();
         playerToolController = GetComponent<PlayerToolController>();
         playerCarryController = GetComponent<PlayerCarryController>();
+        playerInput = GetComponent<PlayerInput>();
 
         currentState = States.Idle;
     }
@@ -39,12 +41,12 @@ public class PlayerStateController : MonoBehaviour
 
     private void SetStates()
     {
-        if (Input.GetKeyDown(KeyCode.Space) && playerToolController.IsChopping() && currentState == States.Idle)
+        if (playerInput.PressedUseKey() && playerToolController.IsChopping() && currentState == States.Idle)
         {
             ChangeState(States.Chopping);
             return;
         }
-        else if (Input.GetKeyDown(KeyCode.Space) && playerToolController.IsMining() && currentState == States.Idle)
+        else if (playerInput.PressedUseKey() && playerToolController.IsMining() && currentState == States.Idle)
         {
             ChangeState(States.Mining);
             return;

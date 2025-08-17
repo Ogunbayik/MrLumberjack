@@ -22,7 +22,6 @@ public class PlayerController : MonoBehaviour
 
     private Vector3 movementDirection;
 
-    private bool isMoving;
     private void Awake()
     {
         stateController = GetComponent<PlayerStateController>();
@@ -55,7 +54,6 @@ public class PlayerController : MonoBehaviour
                 movementSpeed = runSpeed;
         }
     }
-
     private void HandleMovement()
     {
         horizontalInput = Input.GetAxis(Consts.PlayerInputs.HORIZONTAL_INPUT);
@@ -66,10 +64,9 @@ public class PlayerController : MonoBehaviour
         if (IsMoving())
             playerRb.velocity = movementDirection * movementSpeed;
     }
-
     private void HandleRotation()
     {
-        if(isMoving)
+        if (IsMoving())
         {
             var visualForward = Vector3.RotateTowards(characterVisual.transform.forward, movementDirection, rotationSpeed * Time.deltaTime, 0f);
             var visualRotation = Quaternion.LookRotation(visualForward);
@@ -77,21 +74,14 @@ public class PlayerController : MonoBehaviour
             characterVisual.transform.rotation = visualRotation;
         }
     }
-
     public void SetPlayerController(bool isActive)
     {
         movementDirection = Vector3.zero;
         this.enabled = isActive;
     }
-
     public bool IsMoving()
     {
-        if (movementDirection != Vector3.zero)
-            isMoving = true;
-        else
-            isMoving = false;
-
-        return isMoving;
+        return movementDirection != Vector3.zero;
     }
 
 }

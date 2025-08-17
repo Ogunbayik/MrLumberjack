@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5836dede8e899a54ea0d161f94b1847b, type: 3}
   m_Name: Stone
   m_EditorClassIdentifier: 
-  itemName: Stone
   itemPrefab: {fileID: 6931073953940620502, guid: 651c91cf3e9963a49a608214a5cecbbf, type: 3}
+  itemName: Stone
   itemBetweenSpace: 3
+  itemCost: 2
   itemSprite: {fileID: 21300000, guid: bae19751fc375f74ba3e279f1df96556, type: 3}

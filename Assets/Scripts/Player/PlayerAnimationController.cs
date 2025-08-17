@@ -57,22 +57,18 @@ public class PlayerAnimationController : MonoBehaviour
     {
         animator.SetBool(Consts.PlayerAnimationParameter.MOVING, isMove);
     }
-
     public void CarryAnimation(bool isCarry)
     {
         animator.SetBool(Consts.PlayerAnimationParameter.CARRYING, isCarry);
     }
-
     public void ChoppingAnimation(bool isChopping)
     {
         animator.SetBool(Consts.PlayerAnimationParameter.CHOPPING, isChopping);
     }
-
     public void MiningAnimation(bool isMining)
     {
         animator.SetBool(Consts.PlayerAnimationParameter.MINING, isMining);
     }
-
     public void ResetChoppingAnimation()
     {
         ChoppingAnimation(false);
@@ -83,22 +79,26 @@ public class PlayerAnimationController : MonoBehaviour
         MiningAnimation(false);
         stateController.ChangeState(PlayerStateController.States.Idle);
     }
-
     public void ActivateToolCollider()
     {
         var axeCollider = toolController.GetAxeCollider();
         var pickaxeCollider = toolController.GetPickaxeCollider();
+
+        axeCollider.enabled = false;
+        pickaxeCollider.enabled = false;
 
         if (toolController.IsChopping())
             axeCollider.enabled = true;
         else if (toolController.IsMining())
             pickaxeCollider.enabled = true;
     }
-
     public void DeactivateToolCollider()
     {
         var axeCollider = toolController.GetAxeCollider();
         var pickaxeCollider = toolController.GetPickaxeCollider();
+
+        axeCollider.enabled = false;
+        pickaxeCollider.enabled = false;
 
         if (toolController.IsChopping())
             axeCollider.enabled = false;
