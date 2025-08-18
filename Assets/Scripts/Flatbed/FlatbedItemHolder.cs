@@ -25,14 +25,28 @@ public class FlatbedItemHolder : MonoBehaviour
     {
         InitializeItem();
     }
-    private void InitializeItem()
+    public void InitializeItem()
     {
+        var unlockedItemList = UnlockedItemManager.Instance.GetUnlockedItemList();
+        if(unlockedItemList.Count != 0)
+        {
+            foreach (var item in unlockedItemList)
+            {
+                if (!allItemList.Contains(item))
+                    allItemList.Add(item);
+                else
+                    Debug.Log("Flatbed has this item");
+            }
+        }
+
         requiredItemSO = GetRandomItemSO();
         requiredItemCount = GetRandomCount();
         initialRequiredItemCount = requiredItemCount;
 
         if (!requiredItemList.ContainsKey(requiredItemSO.itemName))
             requiredItemList.Add(requiredItemSO.itemName, requiredItemCount);
+
+        UpdateLoadedStatus();
     }
     public void UpdateLoadedStatus()
     {

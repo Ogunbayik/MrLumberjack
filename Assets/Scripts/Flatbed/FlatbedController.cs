@@ -11,9 +11,12 @@ public class FlatbedController : MonoBehaviour
     public float deceleratingDistance;
     [Header("Movement Settings")]
     public float maximumSpeed;
+    public float movementCooldown;
 
     [HideInInspector]
     public float currentSpeed;
+    [HideInInspector]
+    public Transform spawnPosition;
     [HideInInspector]
     public Transform standPosition;
     [HideInInspector]
@@ -22,6 +25,7 @@ public class FlatbedController : MonoBehaviour
     public Transform movementPosition;
     private void Awake()
     {
+        spawnPosition = GameObject.Find(Consts.FlatbedMovementPositions.SPAWN_POSITION).transform;
         standPosition = GameObject.Find(Consts.FlatbedMovementPositions.STAND_POSITION).transform;
         exitPosition = GameObject.Find(Consts.FlatbedMovementPositions.EXIT_POSITION).transform;
     }
@@ -29,6 +33,7 @@ public class FlatbedController : MonoBehaviour
     {
         InitializeFlatbed();
     }
+
     private void InitializeFlatbed()
     {
         movementPosition = standPosition;

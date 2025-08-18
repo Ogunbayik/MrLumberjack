@@ -6,14 +6,16 @@ public class Building : MonoBehaviour
 {
     private List<GameObject> produceList;
 
+    [Header("Building Settings")]
     [SerializeField] private string buildingID;
     [SerializeField] private List<GameObject> initialInactiveList;
+    [Header("Produce Settings")]
     [SerializeField] private ItemDataSO requiredItemSO;
     [SerializeField] private ItemDataSO productItemSO;
-    [SerializeField] private Transform producePosition;
     [SerializeField] private int materialNeededCount;
     [SerializeField] private int maxProduceTimer;
     [SerializeField] private int maxProduceCount;
+    [SerializeField] private Transform producePosition;
 
     private float produceTimer;
 

@@ -16,6 +16,7 @@ public class Consts
 
     public struct FlatbedMovementPositions
     {
+        public const string SPAWN_POSITION = "SpawnPosition";
         public const string STAND_POSITION = "StandPosition";
         public const string EXIT_POSITION = "ExitPosition";
     }

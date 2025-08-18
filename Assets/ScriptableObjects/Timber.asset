@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5836dede8e899a54ea0d161f94b1847b, type: 3}
   m_Name: Timber
   m_EditorClassIdentifier: 
-  itemPrefab: {fileID: 2037526512360942275, guid: a73d46877ddfa3e469fb2cf2f5512257, type: 3}
+  itemPrefab: {fileID: 1951723832701707909, guid: fdceb2c4b8ec75342976ae05c503a9bf, type: 3}
   itemName: Timber
   itemBetweenSpace: 10
   itemCost: 5

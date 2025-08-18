@@ -27,8 +27,8 @@ public class PlayerCarryController : MonoBehaviour
         {
             if (toolController.IsCarrying())
             {
-                UpdateCarryingStatus();
                 carryable.PickUp(this);
+                UpdateCarryingStatus();
             }
             else
                 Debug.Log("Player can not carry any log");
@@ -58,16 +58,8 @@ public class PlayerCarryController : MonoBehaviour
     }
     public void DestroyLastListObject()
     {
-        if (carriedList.Count > 0)
-        {
-            Destroy(carriedList[carriedList.Count - 1].gameObject);
-            carriedList.Remove(carriedList[carriedList.Count - 1]);
-        }
-        else
-        {
-            UpdateCarryingStatus();
-            ResetCarriedObjectName();
-        }
+        Destroy(carriedList[carriedList.Count - 1].gameObject);
+        carriedList.Remove(carriedList[carriedList.Count - 1]);
     }
     public void ResetCarriedObjectName()
     {

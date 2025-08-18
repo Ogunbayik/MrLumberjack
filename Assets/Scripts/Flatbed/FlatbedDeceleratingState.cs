@@ -22,7 +22,11 @@ public class FlatbedDeceleratingState : IFlatbedState
         if(flatbed.currentSpeed <= 0)
         {
             flatbed.currentSpeed = 0;
-            flatbed.SetState(new FlatbedLoadingState());
+            if (flatbed.movementPosition == flatbed.standPosition)
+                flatbed.SetState(new FlatbedLoadedState());
+            else
+                flatbed.SetState(new FlatbedUnloadedState());
+
         }
 
         flatbed.Movement();
