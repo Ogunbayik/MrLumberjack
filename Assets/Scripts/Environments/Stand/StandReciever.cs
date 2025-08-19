@@ -57,9 +57,13 @@ public class StandReciever : MonoBehaviour
 
         if(receiverTime <= 0)
         {
+            FlatbedItemHolder.Instance.DeliveredItem();
             OnItemDelivered?.Invoke(flatbeditemHolder);
+            flatbeditemHolder.UpdateLoadedStatus();
+
             player.DestroyLastListObject();
             player.UpdateCarryingStatus();
+
             ResetReceiveTime();
         }
     }
@@ -68,7 +72,10 @@ public class StandReciever : MonoBehaviour
         var player = other.gameObject.GetComponent<PlayerCarryController>();
 
         if (player && !player.IsCarrying())
+        {
+            ResetReceiveTime();
             player.ResetCarriedObjectName();
+        }
             
     }
     private void ResetReceiveTime()

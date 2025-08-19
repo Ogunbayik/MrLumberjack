@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class PlayerToolController : MonoBehaviour
 {
+    private PlayerUI playerUI;
+
     private PlayerStateController stateController;
     private PlayerCarryController carryController;
     private PlayerInput playerInput;
@@ -28,6 +30,7 @@ public class PlayerToolController : MonoBehaviour
         stateController = GetComponent<PlayerStateController>();
         carryController = GetComponent<PlayerCarryController>();
         playerInput = GetComponent<PlayerInput>();
+        playerUI = GetComponentInChildren<PlayerUI>();
     }
     void Start()
     {
@@ -65,6 +68,7 @@ public class PlayerToolController : MonoBehaviour
 
                 allTools[axeIndex].SetActive(true);
                 allTools[pickaxeIndex].SetActive(false);
+                playerUI.UpdateToolImage(playerUI.GetAxeSprite());
 
                 isChopping = true;
                 isMining = false;
@@ -75,6 +79,7 @@ public class PlayerToolController : MonoBehaviour
 
                 allTools[axeIndex].SetActive(false);
                 allTools[pickaxeIndex].SetActive(true);
+                playerUI.UpdateToolImage(playerUI.GetPickaxeSprite());
 
                 isChopping = false;
                 isMining = true;
@@ -85,6 +90,7 @@ public class PlayerToolController : MonoBehaviour
 
                 allTools[axeIndex].SetActive(false);
                 allTools[pickaxeIndex].SetActive(false);
+                playerUI.UpdateToolImage(playerUI.GetNoneSprite());
 
                 isChopping = false;
                 isMining = false;

@@ -1,9 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class FlatbedItemHolder : MonoBehaviour
 {
+    public static FlatbedItemHolder Instance;
+
+    public event Action<FlatbedItemHolder> OnDeliveredItem;
+    public event Action OnFlatbedLoaded;
+
     private Dictionary<string, int> requiredItemList = new Dictionary<string, int>();
 
     [Header("Visual Settings")]
@@ -20,11 +26,39 @@ public class FlatbedItemHolder : MonoBehaviour
     private int initialRequiredItemCount;
 
     private bool isLoaded;
+    private void Awake()
+    {
+        #region Singleton
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(this);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+        #endregion
+    }
 
     private void Start()
     {
         InitializeItem();
     }
+    private void OnEnable()
+    {
+        OnDeliveredItem += FlatbedItemHolder_OnDeliveredItem;
+    }
+    private void OnDisable()
+    {
+        OnDeliveredItem -= FlatbedItemHolder_OnDeliveredItem;
+    }
+
+    private void FlatbedItemHolder_OnDeliveredItem(FlatbedItemHolder flatbed)
+    {
+        UpdateLoadedStatus();
+    }
+
     public void InitializeItem()
     {
         var unlockedItemList = UnlockedItemManager.Instance.GetUnlockedItemList();
@@ -60,12 +94,17 @@ public class FlatbedItemHolder : MonoBehaviour
         {
             Debug.Log("Flatbed is loaded full");
             isLoaded = true;
+            OnFlatbedLoaded?.Invoke();
         }
         else
         {
             Debug.Log("Flatbed is loaded but still need more item for loaded");
             isLoaded = false;
         }
+    }
+    public void DeliveredItem()
+    {
+        OnDeliveredItem?.Invoke(this);
     }
     public void ToggleLoadObjectActivation(bool isActive)
     {
@@ -102,12 +141,12 @@ public class FlatbedItemHolder : MonoBehaviour
     }
     private int GetRandomCount()
     {
-        var randomIndex = Random.Range(minimumRequiredCount, maximumRequiredCount);
+        var randomIndex = UnityEngine.Random.Range(minimumRequiredCount, maximumRequiredCount);
         return randomIndex;
     }
     private ItemDataSO GetRandomItemSO()
     {
-        var randomIndex = Random.Range(0, allItemList.Count);
+        var randomIndex = UnityEngine.Random.Range(0, allItemList.Count);
         var randomItemSO = allItemList[randomIndex];
 
         return randomItemSO;
