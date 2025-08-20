@@ -5,10 +5,11 @@ using UnityEngine.UI;
 
 public class PlayerUI : MonoBehaviour
 {
+    [Header("Sprite Settings")]
     [SerializeField] private Sprite noneSprite;
     [SerializeField] private Sprite axeSprite;
     [SerializeField] private Sprite pickaxeSprite;
-
+    [Header("Image Settings")]
     [SerializeField] private Image toolImage;
     [SerializeField] private Image receiveItemImage;
     private void Start()

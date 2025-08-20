@@ -15,5 +15,5 @@ MonoBehaviour:
   itemPrefab: {fileID: 6931073953940620502, guid: 651c91cf3e9963a49a608214a5cecbbf, type: 3}
   itemName: Stone
   itemBetweenSpace: 3
-  itemCost: 2
+  itemCost: 10
   itemSprite: {fileID: 21300000, guid: bae19751fc375f74ba3e279f1df96556, type: 3}

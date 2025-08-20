@@ -30,7 +30,6 @@ public class PlayerController : MonoBehaviour
         playerRb = GetComponent<Rigidbody>();
         movementSpeed = runSpeed;
     }
-
     void Update()
     {
         if (stateController.currentState == PlayerStateController.States.Chopping || stateController.currentState == PlayerStateController.States.Mining)
@@ -83,5 +82,4 @@ public class PlayerController : MonoBehaviour
     {
         return movementDirection != Vector3.zero;
     }
-
 }

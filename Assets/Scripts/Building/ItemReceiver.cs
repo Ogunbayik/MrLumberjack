@@ -23,13 +23,18 @@ public class ItemReceiver : MonoBehaviour
     }
     private void OnTriggerEnter(Collider other)
     {
+        if (other.gameObject.TryGetComponent<PlayerController>(out PlayerController player))
+            playerController = player;
+
         playerController = other.gameObject.GetComponent<PlayerController>();
         var playerCarryController = other.gameObject.GetComponent<PlayerCarryController>();
 
         if(playerController)
         {
+            ResetReceiveTimer();
+
             if (!buildingUnlockManager.IsUnlocked() && !playerCarryController.IsCarrying())
-                buildingUnlockManager.UnlockBuilding();
+                buildingUnlockManager.UnlockBuilding(playerController);
         }
     }
     private void OnTriggerStay(Collider other)
@@ -50,7 +55,7 @@ public class ItemReceiver : MonoBehaviour
         if (playerCarryController)
         {
             playerCarryController.ResetCarriedObjectName();
-            buildingUIManager.ToggleReceiverPanel(false);
+            buildingUIManager.ToggleMoneyImage(false);
             playerController = null;
         }
     }
@@ -62,22 +67,23 @@ public class ItemReceiver : MonoBehaviour
         {
             if (receiveTimer <= 0)
             {
-                building.IncreaseMaterialCount();
-                building.UpdateProduceStatus();
-
                 player.DestroyLastListObject();
                 player.UpdateCarryingStatus();
+
+                building.IncreaseMaterialCount();
+                building.UpdateProduceStatus();
                 ResetReceiveTimer();
             }
         }
         else
+        {
             ResetReceiveTimer();
+        }
     }
     private void ResetReceiveTimer()
     {
         receiveTimer = maxReceiveTime;
     }
-
     public PlayerController GetPlayerController()
     {
         return playerController;

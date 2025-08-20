@@ -4,16 +4,17 @@ using UnityEngine;
 
 public class Building : MonoBehaviour
 {
+    private BuildingUIManager buildingUIManager;
+
     private List<GameObject> produceList;
 
     [Header("Building Settings")]
-    [SerializeField] private string buildingID;
     [SerializeField] private List<GameObject> initialInactiveList;
     [Header("Produce Settings")]
     [SerializeField] private ItemDataSO requiredItemSO;
     [SerializeField] private ItemDataSO productItemSO;
+    [SerializeField] private float maxProduceTime;
     [SerializeField] private int materialNeededCount;
-    [SerializeField] private int maxProduceTimer;
     [SerializeField] private int maxProduceCount;
     [SerializeField] private Transform producePosition;
 
@@ -22,20 +23,21 @@ public class Building : MonoBehaviour
     private int materialCount;
 
     private bool isProduce;
+    private void Awake()
+    {
+        buildingUIManager = GetComponent<BuildingUIManager>();
+    }
     void Start()
     {
         InitializeBuilding();
     }
-
-    // Update is called once per frame
     void Update()
     {
-        if (isProduce)
-            ProduceItem();
+        ProduceItem();
     }
     private void InitializeBuilding()
     {
-        produceTimer = maxProduceTimer;
+        SetProduceTimer(maxProduceTime);
         SetInitialObjects(false);
     }
     public void SetInitialObjects(bool isActive)
@@ -47,30 +49,31 @@ public class Building : MonoBehaviour
     }
     private void ProduceItem()
     {
-        if (isProduce)
+        if(!IsProduce())
         {
-            produceTimer -= Time.deltaTime;
+            SetProduceTimer(maxProduceTime);
+            return;
+        }    
 
-            if (produceTimer <= 0)
-            {
-                var productItem = Instantiate(productItemSO.itemPrefab, producePosition);
-                produceList.Add(productItem);
-                var itemOffset = (float)produceList.Count / productItemSO.itemBetweenSpace;
+        produceTimer -= Time.deltaTime;
+        buildingUIManager.SetFillAmount(maxProduceTime, produceTimer);
 
-                if (IsDirectionX())
-                    productItem.transform.position = new Vector3(producePosition.position.x - itemOffset, producePosition.position.y + (productItem.transform.localScale.y / 2), producePosition.position.z);
-                else
-                    productItem.transform.position = new Vector3(producePosition.position.x, producePosition.position.y + (productItem.transform.localScale.y / 2), producePosition.position.z - itemOffset);
-
-                DecreaseMaterialCount();
-                SetProduceTimer(maxProduceTimer);
-                UpdateProduceStatus();
-            }
-        }
-        else
+        if (produceTimer <= 0)
         {
-            SetProduceTimer(maxProduceTimer);
+            var productItem = Instantiate(productItemSO.itemPrefab, producePosition);
+            produceList.Add(productItem);
+            var itemOffset = (float)produceList.Count / productItemSO.itemBetweenSpace;
+
+            if (IsDirectionX())
+                productItem.transform.position = new Vector3(producePosition.position.x - itemOffset, producePosition.position.y + (productItem.transform.localScale.y / 2), producePosition.position.z);
+            else
+                productItem.transform.position = new Vector3(producePosition.position.x, producePosition.position.y + (productItem.transform.localScale.y / 2), producePosition.position.z - itemOffset);
+
+            DecreaseMaterialCount();
+            SetProduceTimer(maxProduceTime);
+            UpdateProduceStatus();
         }
+        
     }
     public void IncreaseMaterialCount()
     {
@@ -78,7 +81,7 @@ public class Building : MonoBehaviour
     }
     private void DecreaseMaterialCount()
     {
-        materialCount--;
+        materialCount -= materialNeededCount;
     }
     private void SetProduceTimer(float timer)
     {
@@ -93,8 +96,10 @@ public class Building : MonoBehaviour
     }
     public void UpdateProduceStatus()
     {
-        if (materialCount >= materialNeededCount && produceList.Count < maxProduceCount)
+        if(produceList.Count <= maxProduceCount)
+        {
             isProduce = true;
+        }
         else
             isProduce = false;
     }
@@ -102,9 +107,9 @@ public class Building : MonoBehaviour
     {
         return player.GetCarriedObjectName() == requiredItemSO.itemName;
     }
-    public List<GameObject> GetProduceList()
+    public bool IsProduce()
     {
-        return produceList;
+        return isProduce;
     }
     public ItemDataSO GetRequiredItemSO()
     {
@@ -114,8 +119,13 @@ public class Building : MonoBehaviour
     {
         return productItemSO;
     }
-    public string GetBuildingID()
+    public float GetProduceItemTimer()
     {
-        return buildingID;
+        return produceTimer;
     }
+    public float GetMaximumProduceTime()
+    {
+        return maxProduceTime;
+    }
+
 }

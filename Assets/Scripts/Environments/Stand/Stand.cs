@@ -29,10 +29,12 @@ public class Stand : MonoBehaviour
     }
     private void OnEnable()
     {
-        //standReciever.OnItemDelivered += StandReciever_OnItemDelivered;
         FlatbedItemHolder.Instance.OnDeliveredItem += Instance_OnDeliveredItem;
     }
-
+    private void OnDisable()
+    {
+        FlatbedItemHolder.Instance.OnDeliveredItem -= Instance_OnDeliveredItem;
+    }
     private void Instance_OnDeliveredItem(FlatbedItemHolder flatbedItemHolder)
     {
         flatbedItemHolder.DecreaseRequiredItemCount();
@@ -53,32 +55,6 @@ public class Stand : MonoBehaviour
         UpdateRequiredCountText(flatbedItemHolder.GetRequiredItemCount());
         flatbedItemHolder.UpdateLoadedStatus();
     }
-
-    private void OnDisable()
-    {
-        //standReciever.OnItemDelivered -= StandReciever_OnItemDelivered;
-        FlatbedItemHolder.Instance.OnDeliveredItem -= Instance_OnDeliveredItem;
-    }/*
-    private void StandReciever_OnItemDelivered(FlatbedItemHolder flatbedItemHolder)
-    {
-        flatbedItemHolder.DecreaseRequiredItemCount();
-
-        if (flatbedItemHolder.GetRequiredItemCount() == 0)
-        {
-            flatbedController.SetMovementPosition(flatbedController.exitPosition);
-
-            var money = flatbedItemHolder.GetInitialRequiredItemCount() * flatbedItemHolder.GetRequiredItemSO().itemCost;
-            MoneyManager.Instance.AddMoney(money);
-            MoneyManager.Instance.UpdateAddMoneyText(money);
-            MoneyManager.Instance.UpdateMoneyUI();
-            ShowItemCounterUI(false);
-            ShowNotWorkingUI(true);
-            standAnimator.SetFlatbedArrivedAnimation(false);
-        }
-
-        UpdateRequiredCountText(flatbedItemHolder.GetRequiredItemCount());
-        flatbedItemHolder.UpdateLoadedStatus();
-    }*/
     private void OnTriggerEnter(Collider other)
     {
         if(other.gameObject.TryGetComponent<FlatbedItemHolder>(out FlatbedItemHolder itemHolder))

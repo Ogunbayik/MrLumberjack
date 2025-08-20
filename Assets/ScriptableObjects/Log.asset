@@ -15,5 +15,5 @@ MonoBehaviour:
   itemPrefab: {fileID: 3226282047523510717, guid: 5c0ca946714101c44a51992a809382ee, type: 3}
   itemName: Log
   itemBetweenSpace: 4
-  itemCost: 2
+  itemCost: 10
   itemSprite: {fileID: 21300000, guid: b09916c63680f22419b8343e91765964, type: 3}
