@@ -8,4 +8,5 @@ public class Tree : GatherableResource, IChopable
     {
         base.OnHitResource(damageAmount);
     }
+    
 }

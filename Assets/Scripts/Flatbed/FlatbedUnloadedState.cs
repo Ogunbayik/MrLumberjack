@@ -28,9 +28,7 @@ public class FlatbedUnloadedState : IFlatbedState
         cooldownTimer -= Time.deltaTime;
 
         if (cooldownTimer <= 0)
-        {
             flatbed.SetState(new FlatbedAcceleratingState());
-        }
     }
 
 }

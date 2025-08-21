@@ -5,13 +5,14 @@ public class BuildingUIManager : MonoBehaviour
 {
     private Building building;
 
-    [Header("UI Settings")]
-    [SerializeField] private GameObject workingUI;
+    [Header("Image Settings")]
     [SerializeField] private Image requiredItemImage;
     [SerializeField] private Image coinImage;
     [SerializeField] private Image produceItemImage;
     [SerializeField] private Image fillProduceImage;
     [SerializeField] private Vector3 imageRotation;
+    [Header("Visual Settings")]
+    [SerializeField] private GameObject workingUI;
     [Header("Sprite Settings")]
     [SerializeField] private Sprite spriteCoin;
     private void Awake()

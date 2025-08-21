@@ -8,8 +8,9 @@ public class ItemDataSO : ScriptableObject
     [Header("Item Settings")]
     public GameObject itemPrefab;
     public string itemName;
-    public float itemBetweenSpace;
-    public int itemCost;
+    public float intervalHorizontal;
+    public float intervalVertical;
+    public int sellPrice;
     [Header("UI Settings")]
     public Sprite itemSprite;
 }

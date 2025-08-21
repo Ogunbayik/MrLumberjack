@@ -10,6 +10,7 @@ public class StandReciever : MonoBehaviour
     private Stand stand;
     private FlatbedItemHolder flatbeditemHolder;
 
+    [Header("Timer Settings")]
     [SerializeField] private float maxReceiverTime;
 
     private float receiverTime;
@@ -51,7 +52,7 @@ public class StandReciever : MonoBehaviour
             }
         }
     }
-    private void ReceiveItemToFlatbed(PlayerCarryController player)
+    private void ReceiveItemToFlatbed(PlayerCarryController playerCarryController)
     {
         receiverTime -= Time.deltaTime;
 
@@ -61,22 +62,20 @@ public class StandReciever : MonoBehaviour
             OnItemDelivered?.Invoke(flatbeditemHolder);
             flatbeditemHolder.UpdateLoadedStatus();
 
-            player.DestroyLastListObject();
-            player.UpdateCarryingStatus();
+            playerCarryController.DestroyLastListObject();
+            playerCarryController.UpdateCarryingStatus();
 
             ResetReceiveTime();
         }
     }
     private void OnTriggerExit(Collider other)
     {
-        var player = other.gameObject.GetComponent<PlayerCarryController>();
+        if(other.gameObject.TryGetComponent<PlayerCarryController>(out PlayerCarryController playerCarryController))
 
-        if (player && !player.IsCarrying())
-        {
-            ResetReceiveTime();
-            player.ResetCarriedObjectName();
-        }
-            
+        if (!playerCarryController.IsCarrying())
+           playerCarryController.ResetCarriedObjectName();
+
+        ResetReceiveTime();
     }
     private void ResetReceiveTime()
     {

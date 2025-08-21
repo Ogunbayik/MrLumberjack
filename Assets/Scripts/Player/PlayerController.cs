@@ -13,7 +13,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float carrySpeed;
     [SerializeField] private float runSpeed;
     [SerializeField] private float rotationSpeed;
-    [Header("Child Settings")]
+    [Header("Visual Settings")]
     [SerializeField] private Transform characterVisual;
 
     private float horizontalInput;

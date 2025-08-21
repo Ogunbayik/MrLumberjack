@@ -92,7 +92,6 @@ GameObject:
   m_Component:
   - component: {fileID: 6460342653816884482}
   - component: {fileID: 7422559029131989579}
-  - component: {fileID: 7632954694419250224}
   - component: {fileID: 6460342653816884483}
   - component: {fileID: 6460342653816884484}
   m_Layer: 0
@@ -131,22 +130,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   minimumHealth: 2
   maximumHealth: 4
-  resourcePrefab: {fileID: 3226282047523510717, guid: 5c0ca946714101c44a51992a809382ee, type: 3}
-  distanceBetweenSpawnObjects: 4
---- !u!114 &7632954694419250224
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6460342653816884481}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9ce2e4ef26094ff4c8239af8b4c48899, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  resourceVisual: {fileID: 1384372186845247579}
-  maxRespawnTime: 10
+  resourceDataSO: {fileID: 0}
+  resourceVisual: {fileID: 0}
+  respawnDelayTimer: 0
 --- !u!136 &6460342653816884483
 CapsuleCollider:
   m_ObjectHideFlags: 0

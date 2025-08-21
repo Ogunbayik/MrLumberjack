@@ -11,6 +11,7 @@ public class ItemReceiver : MonoBehaviour
     private BuildingUIManager buildingUIManager;
     private BuildingUnlockManager buildingUnlockManager;
 
+    [Header("Timer Settings")]
     [SerializeField] private float maxReceiveTime;
 
     private float receiveTimer;
@@ -26,7 +27,6 @@ public class ItemReceiver : MonoBehaviour
         if (other.gameObject.TryGetComponent<PlayerController>(out PlayerController player))
             playerController = player;
 
-        playerController = other.gameObject.GetComponent<PlayerController>();
         var playerCarryController = other.gameObject.GetComponent<PlayerCarryController>();
 
         if(playerController)
@@ -50,11 +50,11 @@ public class ItemReceiver : MonoBehaviour
     }
     private void OnTriggerExit(Collider other)
     {
-        var playerCarryController = other.gameObject.GetComponent<PlayerCarryController>();
-
-        if (playerCarryController)
+        if(other.gameObject.TryGetComponent<PlayerCarryController>(out PlayerCarryController playerCarryController))
         {
-            playerCarryController.ResetCarriedObjectName();
+            if (!playerCarryController.IsCarrying())
+                playerCarryController.ResetCarriedObjectName();
+
             buildingUIManager.ToggleMoneyImage(false);
             playerController = null;
         }
@@ -77,6 +77,7 @@ public class ItemReceiver : MonoBehaviour
         }
         else
         {
+            player.GetCarriedList().Clear();
             ResetReceiveTimer();
         }
     }

@@ -10,14 +10,12 @@ public class BuildingUnlockManager : MonoBehaviour
     private Building building;
     private BuildingUIManager buildingUIManager;
     private BuildingAnimationController buildingAnimationController;
-    private ItemReceiver itemReceiver;
 
     [Header("Unlock Settings")]
     [SerializeField] private int buildingCost;
     [SerializeField] private bool isUnlocked;
     private void Awake()
     {
-        itemReceiver = GetComponentInChildren<ItemReceiver>();
         building = GetComponent<Building>();
         buildingUIManager = GetComponent<BuildingUIManager>();
         buildingAnimationController = GetComponent<BuildingAnimationController>();
@@ -70,6 +68,10 @@ public class BuildingUnlockManager : MonoBehaviour
 
             UnlockedItemManager.Instance.AddUnlockedItem(building.GetProduceItemSO());
             player.SetPlayerController(true);
+        }
+        else
+        {
+            buildingUIManager.ToggleMoneyImage(true);
         }
     }
 }

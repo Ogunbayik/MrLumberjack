@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using System;
 
 public class PlayerCarryController : MonoBehaviour
 {
@@ -37,19 +36,18 @@ public class PlayerCarryController : MonoBehaviour
     public void Carry(ICarryable carryable)
     {
         var carryableObject = carryable.GetCarriableObject;
-        var itemSpace = carryable.GetItemSpace;
 
         if (carriedObjectName == null)
-            carriedObjectName = carryable.GetItemName;
+            carriedObjectName = carryable.GetItemDataSO.itemName;
 
-        if(carriedObjectName == carryable.GetItemName && carriedList.Count < maximumCarryCount)
+        if(carriedObjectName == carryable.GetItemDataSO.itemName && carriedList.Count < maximumCarryCount)
         {
-            var desiredPosition = (float)carriedList.Count / itemSpace;
-            carriedList.Add(carryableObject);
+            var itemInterval = carryPosition.transform.up * carriedList.Count * carryable.GetItemDataSO.intervalVertical;
             carryableObject.transform.SetParent(carryPosition);
-
-            carryableObject.transform.position = new Vector3(carryPosition.position.x, carryPosition.position.y + desiredPosition, carryPosition.position.z);
+            carryableObject.transform.position = carryPosition.transform.position + itemInterval;
             carryableObject.transform.rotation = carryPosition.rotation;
+            
+            carriedList.Add(carryableObject);
         }
         else
         {
@@ -64,6 +62,10 @@ public class PlayerCarryController : MonoBehaviour
     public void ResetCarriedObjectName()
     {
         carriedObjectName = null;
+    }
+    public void SetCarriedObjectName(string itemName)
+    {
+        carriedObjectName = itemName;
     }
     public string GetCarriedObjectName()
     {

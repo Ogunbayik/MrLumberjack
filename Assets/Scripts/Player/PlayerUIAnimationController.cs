@@ -22,6 +22,6 @@ public class PlayerUIAnimationController : MonoBehaviour
 
     public void PlayReceiveAnimation()
     {
-        animator.SetTrigger("ReceiveItem");
+        animator.SetTrigger(Consts.PlayerAnimationParameter.RECEIVE_ITEM);
     }
 }

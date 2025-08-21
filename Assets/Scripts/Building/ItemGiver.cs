@@ -4,15 +4,15 @@ using UnityEngine;
 
 public class ItemGiver : MonoBehaviour
 {
-    private BuildingManager buildingManager;
+    private Building building;
 
-    [Header("Give Settings")]
+    [Header("Timer Settings")]
     [SerializeField] private int maxGiveTime;
 
     private float giveTimer;
     private void Awake()
     {
-        buildingManager = GetComponentInParent<BuildingManager>();
+        building = GetComponentInParent<Building>();
     }
     private void OnTriggerEnter(Collider other)
     {
@@ -35,24 +35,28 @@ public class ItemGiver : MonoBehaviour
 
     private void GiveItemToPlayer(PlayerCarryController player)
     {
-        var produceList = buildingManager.GetProduceList();
+        var produceList = building.GetProduceList();
 
         if (produceList.Count > 0)
         {
-            var lastProduceItem = produceList[produceList.Count - 1];
-            lastProduceItem.transform.SetParent(player.GetCarryPosition());
-            player.UpdateCarryingStatus();
+            if (player.GetCarriedObjectName() == building.GetProduceItemSO().itemName || player.GetCarriedObjectName() == null)
+            {
+                var carriedList = player.GetCarriedList();
+                var lastProduceItem = produceList[produceList.Count - 1];
+                var itemInterval = player.GetCarryPosition().transform.up * player.GetCarriedList().Count * building.GetProduceItemSO().intervalVertical; 
 
-            var carryPosition = player.GetCarryPosition();
-            var carriedList = player.GetCarriedList();
-            var itemOffsetY = (float)carriedList.Count / buildingManager.GetProduceItemSO().itemBetweenSpace;
+                carriedList.Add(lastProduceItem);
 
-            carriedList.Add(lastProduceItem);
-            lastProduceItem.transform.position = new Vector3(carryPosition.position.x, carryPosition.position.y + itemOffsetY, carryPosition.position.z);
-            lastProduceItem.transform.rotation = player.GetCarryPosition().rotation;
+                lastProduceItem.transform.position = player.GetCarryPosition().position + itemInterval;
+                lastProduceItem.transform.rotation = player.GetCarryPosition().rotation;
+                lastProduceItem.transform.SetParent(player.GetCarryPosition());
+                
+                player.SetCarriedObjectName(building.GetProduceItemSO().itemName);
 
-            produceList.Remove(lastProduceItem);
-            buildingManager.UpdateProduceStatus();
+                produceList.Remove(lastProduceItem);
+                player.UpdateCarryingStatus();
+                building.UpdateProduceStatus();
+            }
         }
         else
         {

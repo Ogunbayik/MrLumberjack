@@ -6,26 +6,16 @@ using TMPro;
 
 public class Stand : MonoBehaviour
 {
-    private StandReciever standReciever;
+    private StandUI standUI;
     private StandAnimationController standAnimator;
-
-    [Header("UI Settings")]
-    [SerializeField] private Image imageReceiveMaterial;
-    [SerializeField] private Image imageActivate;
-    [SerializeField] private Sprite notWorkingSprite;
-    [SerializeField] private TextMeshProUGUI materialCountText;
 
     private FlatbedController flatbedController;
     private FlatbedItemHolder flatbedItemHolder;
+
     private void Awake()
     {
-        standReciever = GetComponentInChildren<StandReciever>();
+        standUI = GetComponent<StandUI>();
         standAnimator = GetComponent<StandAnimationController>();
-    }
-    private void Start()
-    {
-        imageActivate.sprite = notWorkingSprite;
-        ShowItemCounterUI(false);
     }
     private void OnEnable()
     {
@@ -43,16 +33,16 @@ public class Stand : MonoBehaviour
         {
             flatbedController.SetMovementPosition(flatbedController.exitPosition);
 
-            var money = flatbedItemHolder.GetInitialRequiredItemCount() * flatbedItemHolder.GetRequiredItemSO().itemCost;
+            var money = flatbedItemHolder.GetInitialRequiredItemCount() * flatbedItemHolder.GetRequiredItemSO().sellPrice;
             MoneyManager.Instance.AddMoney(money);
-            MoneyManager.Instance.UpdateAddMoneyText(money);
+            MoneyManager.Instance.UpdatePriceText(money);
             MoneyManager.Instance.UpdateMoneyUI();
-            ShowItemCounterUI(false);
-            ShowNotWorkingUI(true);
+            standUI.ShowItemCounterUI(false);
+            standUI.ShowNotWorkingUI(true);
             standAnimator.SetFlatbedArrivedAnimation(false);
         }
 
-        UpdateRequiredCountText(flatbedItemHolder.GetRequiredItemCount());
+        standUI.UpdateRequiredCountText(flatbedItemHolder.GetRequiredItemCount());
         flatbedItemHolder.UpdateLoadedStatus();
     }
     private void OnTriggerEnter(Collider other)
@@ -61,30 +51,13 @@ public class Stand : MonoBehaviour
         {
             flatbedItemHolder = itemHolder;
             flatbedController = itemHolder.GetComponent<FlatbedController>();
-            imageReceiveMaterial.sprite = itemHolder.GetRequiredItemSO().itemSprite;
-            materialCountText.text = itemHolder.GetRequiredItemCount().ToString();
+            standUI.SetImageMaterial(itemHolder.GetRequiredItemSO().itemSprite);
+            standUI.UpdateRequiredCountText(itemHolder.GetRequiredItemCount());
 
             standAnimator.SetFlatbedArrivedAnimation(true);
-            ShowItemCounterUI(true);
-            ShowNotWorkingUI(false);
+            standUI.ShowItemCounterUI(true);
+            standUI.ShowNotWorkingUI(false);
         }
-    }
-    public void ShowItemCounterUI(bool isActive)
-    {
-        imageReceiveMaterial.gameObject.SetActive(isActive);
-        materialCountText.gameObject.SetActive(isActive);
-    }
-    public void ShowNotWorkingUI(bool isActive)
-    {
-        imageActivate.gameObject.SetActive(isActive);
-    }
-    public void UpdateRequiredCountText(int count)
-    {
-        materialCountText.text = count.ToString();
-    }
-    public FlatbedController GetFlatbedController()
-    {
-        return flatbedController;
     }
     public FlatbedItemHolder GetFlatbedItemHolder()
     {
@@ -94,7 +67,7 @@ public class Stand : MonoBehaviour
     {
         if (other.gameObject.GetComponent<FlatbedController>())
         {
-            imageReceiveMaterial.sprite = null;
+            standUI.SetImageMaterial(null);
             flatbedController = null;
             flatbedItemHolder = null;
         }

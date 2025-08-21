@@ -5,15 +5,14 @@ public class Consts
         public const string HORIZONTAL_INPUT = "Horizontal";
         public const string VERTICAL_INPUT = "Vertical";
     }
-
     public struct PlayerAnimationParameter
     {
         public const string MOVING = "isMoving";
         public const string CARRYING = "isCarrying";
         public const string CHOPPING = "isChopping";
         public const string MINING = "isMining";
+        public const string RECEIVE_ITEM = "ReceiveItem";
     }
-
     public struct FlatbedMovementPositions
     {
         public const string SPAWN_POSITION = "SpawnPosition";

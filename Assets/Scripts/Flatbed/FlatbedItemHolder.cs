@@ -40,7 +40,6 @@ public class FlatbedItemHolder : MonoBehaviour
         }
         #endregion
     }
-
     private void Start()
     {
         InitializeItem();
@@ -53,12 +52,10 @@ public class FlatbedItemHolder : MonoBehaviour
     {
         OnDeliveredItem -= FlatbedItemHolder_OnDeliveredItem;
     }
-
     private void FlatbedItemHolder_OnDeliveredItem(FlatbedItemHolder flatbed)
     {
         UpdateLoadedStatus();
     }
-
     public void InitializeItem()
     {
         var unlockedItemList = UnlockedItemManager.Instance.GetUnlockedItemList();
@@ -162,10 +159,6 @@ public class FlatbedItemHolder : MonoBehaviour
     public int GetInitialRequiredItemCount()
     {
         return initialRequiredItemCount;
-    }
-    public Dictionary<string,int> GetRequiredItemList()
-    {
-        return requiredItemList;
     }
     public bool IsLoaded()
     {

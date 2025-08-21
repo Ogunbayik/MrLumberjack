@@ -4,15 +4,17 @@ using UnityEngine;
 
 public class Stone : MonoBehaviour, ICarryable
 {
+    [Header("Item Data")]
     [SerializeField] private ItemDataSO itemDataSO;
-    public string GetItemName => itemDataSO.itemName;
-
     public GameObject GetCarriableObject => this.gameObject;
-
-    public float GetItemSpace => itemDataSO.itemBetweenSpace;
+    public ItemDataSO GetItemDataSO => itemDataSO;
 
     public void PickUp(PlayerCarryController player)
     {
+        var gatherableResource = GetComponentInParent<GatherableResource>();
+        gatherableResource.ResourceCollected(this.gameObject);
+        gatherableResource.UpdateRespawnStatus();
+
         player.Carry(this);
     }
 }

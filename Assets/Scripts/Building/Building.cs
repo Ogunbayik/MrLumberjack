@@ -6,9 +6,9 @@ public class Building : MonoBehaviour
 {
     private BuildingUIManager buildingUIManager;
 
-    private List<GameObject> produceList;
+    private List<GameObject> produceList = new List<GameObject>();
 
-    [Header("Building Settings")]
+    [Header("Visual Settings")]
     [SerializeField] private List<GameObject> initialInactiveList;
     [Header("Produce Settings")]
     [SerializeField] private ItemDataSO requiredItemSO;
@@ -49,9 +49,10 @@ public class Building : MonoBehaviour
     }
     private void ProduceItem()
     {
-        if(!IsProduce())
+        if(!IsProduce() || produceList.Count >= maxProduceCount)
         {
             SetProduceTimer(maxProduceTime);
+            isProduce = false;
             return;
         }    
 
@@ -61,14 +62,11 @@ public class Building : MonoBehaviour
         if (produceTimer <= 0)
         {
             var productItem = Instantiate(productItemSO.itemPrefab, producePosition);
+            var itemInterval = -producePosition.transform.forward * GetProduceItemSO().intervalHorizontal * produceList.Count;
+
+            productItem.transform.position = producePosition.transform.position + itemInterval;
             produceList.Add(productItem);
-            var itemOffset = (float)produceList.Count / productItemSO.itemBetweenSpace;
-
-            if (IsDirectionX())
-                productItem.transform.position = new Vector3(producePosition.position.x - itemOffset, producePosition.position.y + (productItem.transform.localScale.y / 2), producePosition.position.z);
-            else
-                productItem.transform.position = new Vector3(producePosition.position.x, producePosition.position.y + (productItem.transform.localScale.y / 2), producePosition.position.z - itemOffset);
-
+           
             DecreaseMaterialCount();
             SetProduceTimer(maxProduceTime);
             UpdateProduceStatus();
@@ -87,19 +85,10 @@ public class Building : MonoBehaviour
     {
         produceTimer = timer;
     }
-    public bool IsDirectionX()
-    {
-        if (transform.rotation.y == 0 || transform.rotation.y == 180)
-            return false;
-        else
-            return true;
-    }
     public void UpdateProduceStatus()
     {
-        if(produceList.Count <= maxProduceCount)
-        {
+        if (materialCount >= materialNeededCount)
             isProduce = true;
-        }
         else
             isProduce = false;
     }
@@ -110,6 +99,10 @@ public class Building : MonoBehaviour
     public bool IsProduce()
     {
         return isProduce;
+    }
+    public List<GameObject> GetProduceList()
+    {
+        return produceList;
     }
     public ItemDataSO GetRequiredItemSO()
     {

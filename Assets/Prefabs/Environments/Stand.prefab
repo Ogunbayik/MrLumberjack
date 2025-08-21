@@ -431,6 +431,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1273106081660347097}
   - component: {fileID: 1273106081660347096}
+  - component: {fileID: 3272544052594158553}
   - component: {fileID: 1273106081660347101}
   - component: {fileID: 1273106081660347099}
   - component: {fileID: 1273106081660347098}
@@ -468,6 +469,22 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6c17359b282f8434fbcef9516530c8b1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  imageReceiveMaterial: {fileID: 1273106080337588256}
+  imageActivate: {fileID: 1273106081669156701}
+  notWorkingSprite: {fileID: 21300000, guid: 0a6ca5645b99da64cad34a9e110681f1, type: 3}
+  materialCountText: {fileID: 1273106080220404082}
+--- !u!114 &3272544052594158553
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1273106081660347094}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 69558c0bea8b4804cb0e6f05e6612463, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   imageReceiveMaterial: {fileID: 1273106080337588256}

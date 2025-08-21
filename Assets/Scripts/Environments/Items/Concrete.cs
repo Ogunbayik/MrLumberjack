@@ -4,11 +4,10 @@ using UnityEngine;
 
 public class Concrete : MonoBehaviour, ICarryable
 {
-    [SerializeField] private ItemDataSO itemSO;
-    public string GetItemName => itemSO.itemName;
+    [Header("Item Data")]
+    [SerializeField] private ItemDataSO itemDataSO;
     public GameObject GetCarriableObject => this.gameObject;
-    public float GetItemSpace => itemSO.itemBetweenSpace;
-
+    public ItemDataSO GetItemDataSO => itemDataSO;
     public void PickUp(PlayerCarryController player)
     {
         player.Carry(this);

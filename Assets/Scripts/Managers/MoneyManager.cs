@@ -10,12 +10,14 @@ public class MoneyManager : MonoBehaviour
 
     private MoneyAnimationController animationController;
 
-    [Header("UI Settings")]
+    [Header("Image Settings")]
     [SerializeField] private Image coinImage;
+    [Header("Sprite Settings")]
     [SerializeField] private Sprite coinSprite;
+    [Header("Text Settings")]
     [SerializeField] private TextMeshProUGUI coinText;
-    [SerializeField] private TextMeshProUGUI spendMoneyText;
-    [SerializeField] private TextMeshProUGUI addMoneyText;
+    [SerializeField] private TextMeshProUGUI costText;
+    [SerializeField] private TextMeshProUGUI priceText;
 
     public int currentMoney;
     private void Awake()
@@ -42,13 +44,13 @@ public class MoneyManager : MonoBehaviour
     {
         coinImage.sprite = coinSprite;
         coinText.text = currentMoney.ToString();
-        spendMoneyText.gameObject.SetActive(false);
+        costText.gameObject.SetActive(false);
     }
     public bool TryToSpendMoney(int cost)
     {
         if (currentMoney >= cost)
         {
-            UpdateSpendMoneyText(cost);
+            UpdateCostText(cost);
             SpendMoney(cost);
             UpdateMoneyUI();
             animationController.SpendMoneyAnimation();
@@ -62,13 +64,13 @@ public class MoneyManager : MonoBehaviour
     {
         coinText.text = currentMoney.ToString();
     }
-    public void UpdateAddMoneyText(int money)
+    public void UpdatePriceText(int money)
     {
-        addMoneyText.text = "+" + money.ToString();
+        priceText.text = "+" + money.ToString();
     }
-    public void UpdateSpendMoneyText(int money)
+    public void UpdateCostText(int money)
     {
-        spendMoneyText.text =  "-" + money.ToString();
+        costText.text =  "-" + money.ToString();
     }
     public void AddMoney(int money)
     {
