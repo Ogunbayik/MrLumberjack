@@ -56,12 +56,16 @@ public class PlayerCarryController : MonoBehaviour
     }
     public void DestroyLastListObject()
     {
-        Destroy(carriedList[carriedList.Count - 1].gameObject);
-        carriedList.Remove(carriedList[carriedList.Count - 1]);
+        if (carriedList.Count > 0)
+        {
+            Destroy(carriedList[carriedList.Count - 1].gameObject);
+            carriedList.Remove(carriedList[carriedList.Count - 1]);
+        }
     }
     public void ResetCarriedObjectName()
     {
-        carriedObjectName = null;
+        if (carriedList.Count == 0)
+            carriedObjectName = null;
     }
     public void SetCarriedObjectName(string itemName)
     {
@@ -75,14 +79,13 @@ public class PlayerCarryController : MonoBehaviour
     {
         return carriedList;
     }
-    public bool UpdateCarryingStatus()
+    public void UpdateCarryingStatus()
     {
         if (carriedList.Count > 0)
             isCarrying = true;
         else
             isCarrying = false;
 
-        return isCarrying;
     }
     public bool IsCarrying()
     {

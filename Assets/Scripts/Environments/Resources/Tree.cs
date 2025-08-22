@@ -7,6 +7,7 @@ public class Tree : GatherableResource, IChopable
     public void Chop(int damageAmount)
     {
         base.OnHitResource(damageAmount);
+        animationController.PlayHitAnimation();
     }
     
 }

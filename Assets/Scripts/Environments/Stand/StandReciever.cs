@@ -41,8 +41,7 @@ public class StandReciever : MonoBehaviour
                 else
                 {
                     ResetReceiveTime();
-                    if (!player.IsCarrying())
-                        player.ResetCarriedObjectName();
+                    player.ResetCarriedObjectName();
                     Debug.Log("Player can't give more item");
                 }
             }
@@ -70,10 +69,8 @@ public class StandReciever : MonoBehaviour
     }
     private void OnTriggerExit(Collider other)
     {
-        if(other.gameObject.TryGetComponent<PlayerCarryController>(out PlayerCarryController playerCarryController))
-
-        if (!playerCarryController.IsCarrying())
-           playerCarryController.ResetCarriedObjectName();
+        if (other.gameObject.TryGetComponent<PlayerCarryController>(out PlayerCarryController playerCarryController))
+            playerCarryController.ResetCarriedObjectName();
 
         ResetReceiveTime();
     }

@@ -4,6 +4,7 @@ using UnityEngine;
 
 public abstract class GatherableResource : MonoBehaviour
 {
+    protected ResourceAnimationController animationController;
     private Collider resourceCollider;
 
     protected List<GameObject> resourceList = new List<GameObject>();
@@ -24,6 +25,7 @@ public abstract class GatherableResource : MonoBehaviour
     private bool canRespawn = false;
     private void Awake()
     {
+        animationController = GetComponent<ResourceAnimationController>();
         resourceCollider = GetComponent<Collider>();
         respawnTimer = respawnDelayTimer;
     }

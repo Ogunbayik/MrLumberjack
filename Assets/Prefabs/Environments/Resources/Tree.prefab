@@ -92,8 +92,10 @@ GameObject:
   m_Component:
   - component: {fileID: 6460342653816884482}
   - component: {fileID: 7422559029131989579}
+  - component: {fileID: 6120216714977101097}
   - component: {fileID: 6460342653816884483}
   - component: {fileID: 6460342653816884484}
+  - component: {fileID: 7027544939982550740}
   m_Layer: 0
   m_Name: Tree
   m_TagString: Untagged
@@ -133,6 +135,18 @@ MonoBehaviour:
   resourceDataSO: {fileID: 0}
   resourceVisual: {fileID: 0}
   respawnDelayTimer: 0
+--- !u!114 &6120216714977101097
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6460342653816884481}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7ece54f2fe7b6db44b7fdcf50cc9841a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!136 &6460342653816884483
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -163,3 +177,22 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 126
   m_CollisionDetection: 0
+--- !u!95 &7027544939982550740
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6460342653816884481}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 4d3437676b96f8c4dbed28d80a00538d, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0

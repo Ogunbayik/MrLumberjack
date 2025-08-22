@@ -6,6 +6,7 @@ using System;
 public class ItemReceiver : MonoBehaviour
 {
     private PlayerController playerController;
+    private PlayerCarryController playerCarryController;
 
     private Building building;
     private BuildingUIManager buildingUIManager;
@@ -25,9 +26,10 @@ public class ItemReceiver : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.TryGetComponent<PlayerController>(out PlayerController player))
+        {
             playerController = player;
-
-        var playerCarryController = other.gameObject.GetComponent<PlayerCarryController>();
+            playerCarryController = player.GetComponent<PlayerCarryController>();
+        }
 
         if(playerController)
         {
@@ -50,13 +52,13 @@ public class ItemReceiver : MonoBehaviour
     }
     private void OnTriggerExit(Collider other)
     {
-        if(other.gameObject.TryGetComponent<PlayerCarryController>(out PlayerCarryController playerCarryController))
+        if(other.gameObject.TryGetComponent<PlayerCarryController>(out PlayerCarryController carryController))
         {
-            if (!playerCarryController.IsCarrying())
-                playerCarryController.ResetCarriedObjectName();
+            carryController.ResetCarriedObjectName();
 
             buildingUIManager.ToggleMoneyImage(false);
             playerController = null;
+            playerCarryController = null;
         }
     }
     private void ReceiveItem(PlayerCarryController player)
@@ -77,7 +79,6 @@ public class ItemReceiver : MonoBehaviour
         }
         else
         {
-            player.GetCarriedList().Clear();
             ResetReceiveTimer();
         }
     }
