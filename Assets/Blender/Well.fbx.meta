@@ -3,7 +3,32 @@ guid: 0f03e1322c21c614f9111157dd8e1aeb
 ModelImporter:
   serializedVersion: 20200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Well_Body
+    second: {fileID: 2100000, guid: 8a3da53ac9f87ad4388fcd4aeee34908, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Well_Column
+    second: {fileID: 2100000, guid: 708cc81422d22b64f9f12fb03ae22f7f, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Well_Cylinder
+    second: {fileID: 2100000, guid: b193d3659b0af2b49ad40263daf2f197, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Well_Roof
+    second: {fileID: 2100000, guid: 240ff1ae641ec374986ade0085bfb24e, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Well_Wood
+    second: {fileID: 2100000, guid: 3b76a8fe5f996614aa1d701fa253bc85, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
