@@ -48,9 +48,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   minimumHealth: 3
   maximumHealth: 5
-  resourceDataSO: {fileID: 0}
-  resourceVisual: {fileID: 0}
-  respawnDelayTimer: 0
+  resourceDataSO: {fileID: 11400000, guid: 1287e45d10bbc6341b928e9992d3a324, type: 2}
+  resourceVisual: {fileID: 1334353176146600238}
+  respawnDelayTimer: 20
 --- !u!65 &521956342
 BoxCollider:
   m_ObjectHideFlags: 0

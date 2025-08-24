@@ -132,9 +132,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   minimumHealth: 2
   maximumHealth: 4
-  resourceDataSO: {fileID: 0}
-  resourceVisual: {fileID: 0}
-  respawnDelayTimer: 0
+  resourceDataSO: {fileID: 11400000, guid: d896be6d668da7f49a1adb421dd6721b, type: 2}
+  resourceVisual: {fileID: 1384372186845247579}
+  respawnDelayTimer: 20
 --- !u!114 &6120216714977101097
 MonoBehaviour:
   m_ObjectHideFlags: 0
