@@ -71,7 +71,10 @@ public class BuildingUnlockManager : MonoBehaviour
         }
         else
         {
+            var currentMoney = MoneyManager.Instance.GetCurrentMoney();
+            buildingUIManager.SetRemainCost(buildingCost, currentMoney);
             buildingUIManager.ToggleMoneyImage(true);
+            buildingUIManager.ToggleCostText(true);
         }
     }
 }

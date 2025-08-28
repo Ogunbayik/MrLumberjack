@@ -57,6 +57,7 @@ public class ItemReceiver : MonoBehaviour
             carryController.ResetCarriedObjectName();
 
             buildingUIManager.ToggleMoneyImage(false);
+            buildingUIManager.ToggleCostText(false);
             playerController = null;
             playerCarryController = null;
         }

@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class BuildingUIManager : MonoBehaviour
 {
@@ -15,6 +16,8 @@ public class BuildingUIManager : MonoBehaviour
     [SerializeField] private GameObject workingUI;
     [Header("Sprite Settings")]
     [SerializeField] private Sprite spriteCoin;
+    [Header("Text Settings")]
+    [SerializeField] private TextMeshProUGUI buildCostText;
     private void Awake()
     {
         building = GetComponent<Building>();
@@ -30,6 +33,7 @@ public class BuildingUIManager : MonoBehaviour
 
         ToggleMaterialImage(false);
         ToggleMoneyImage(false);
+        ToggleCostText(false);
     }
     private void Update()
     {
@@ -50,9 +54,18 @@ public class BuildingUIManager : MonoBehaviour
     {
         coinImage.gameObject.SetActive(isActive);
     }
+    public void ToggleCostText(bool isActive)
+    {
+        buildCostText.gameObject.SetActive(isActive);
+    }
     public void ToggleWorkingUI(bool isActive)
     {
         workingUI.SetActive(isActive);
+    }
+    public void SetRemainCost(int buildingCost, int playerMoney)
+    {
+        var remainCost = buildingCost - playerMoney;
+        buildCostText.text = remainCost.ToString();
     }
     public void SetFillAmount(float maximumTime, float currentTime)
     {

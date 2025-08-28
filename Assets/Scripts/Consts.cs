@@ -31,4 +31,10 @@ public class Consts
     {
         public const int HIT_AMOUNT = 1;
     }
+    public struct ResourceAnimationParameter
+    {
+        public const string HIT = "OnHit";
+        public const string RESPAWN = "OnRespawn";
+        public const string DEAD = "OnDead";
+    }
 }

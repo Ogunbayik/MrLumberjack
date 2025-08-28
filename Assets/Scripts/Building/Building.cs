@@ -88,9 +88,13 @@ public class Building : MonoBehaviour
     public void UpdateProduceStatus()
     {
         if (materialCount >= materialNeededCount)
+        {
             isProduce = true;
+        }
         else
+        {
             isProduce = false;
+        }
     }
     public bool HasRequiredMaterial(PlayerCarryController player)
     {

@@ -6,7 +6,7 @@ public class Rock : GatherableResource, IMineable
 {
     public void Mine(int damageAmount)
     {
-        base.OnHitResource(damageAmount);
+        base.OnHitResource(damageAmount); 
     }
 
 }

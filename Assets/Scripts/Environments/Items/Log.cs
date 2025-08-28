@@ -14,7 +14,7 @@ public class Log : MonoBehaviour, ICarryable
     {
         var gatherableResource = GetComponentInParent<GatherableResource>();
         gatherableResource.ResourceCollected(this.gameObject);
-        gatherableResource.UpdateRespawnStatus();
+        gatherableResource.CheckRespawnStatus();
 
         player.Carry(this);
     }

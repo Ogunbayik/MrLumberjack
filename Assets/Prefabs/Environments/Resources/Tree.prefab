@@ -25,7 +25,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1384372186845247579}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
@@ -131,10 +131,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   minimumHealth: 2
-  maximumHealth: 4
+  maximumHealth: 5
   resourceDataSO: {fileID: 11400000, guid: d896be6d668da7f49a1adb421dd6721b, type: 2}
   resourceVisual: {fileID: 1384372186845247579}
-  respawnDelayTimer: 20
+  respawnDelayTimer: 10
 --- !u!114 &6120216714977101097
 MonoBehaviour:
   m_ObjectHideFlags: 0
