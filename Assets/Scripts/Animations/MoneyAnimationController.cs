@@ -16,15 +16,15 @@ public class MoneyAnimationController : MonoBehaviour
 
     private void Instance_OnFlatbedLoaded()
     {
-        AddMoneyAnimation();
+        PlayAddMoneyAnimation();
     }
 
-    public void AddMoneyAnimation()
+    public void PlayAddMoneyAnimation()
     {
-        animator.SetTrigger("AddMoney");
+        animator.SetTrigger(Consts.MoneyAnimationParameter.ADD_MONEY);
     }
-    public void SpendMoneyAnimation()
+    public void PlaySpendMoneyAnimation()
     {
-        animator.SetTrigger("SpendMoney");
+        animator.SetTrigger(Consts.MoneyAnimationParameter.SPEND_MONEY);
     }
 }

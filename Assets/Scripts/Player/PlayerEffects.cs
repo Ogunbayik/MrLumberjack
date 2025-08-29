@@ -6,6 +6,7 @@ public class PlayerEffects : MonoBehaviour
 {
     [Header("Effect Settings")]
     [SerializeField] private ParticleSystem deliveredEffect;
+    [SerializeField] private float destroyEffectTime;
 
     private void Start()
     {
@@ -26,5 +27,6 @@ public class PlayerEffects : MonoBehaviour
         var effect = Instantiate(deliveredEffect);
         var offsetEffect = 2f;
         effect.gameObject.transform.position = new Vector3(position.x, position.y + offsetEffect, position.z);
+        Destroy(effect.gameObject, destroyEffectTime);
     }
 }

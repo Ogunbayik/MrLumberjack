@@ -8,9 +8,10 @@ public class CameraManager : MonoBehaviour
     public static CameraManager Instance;
 
     [Header("Game Cameras")]
+    [SerializeField] private CinemachineVirtualCamera menuCamera;
     [SerializeField] private CinemachineVirtualCamera gameCamera;
     [SerializeField] private CinemachineVirtualCamera cinematicCamera;
-    [Header("Camera Settings")]
+    [Header("Cinematic Settings")]
     [SerializeField] private Vector3 cameraOffset;
     [SerializeField] private Vector3 cameraRotation;
 
@@ -28,6 +29,10 @@ public class CameraManager : MonoBehaviour
         }
         #endregion
     }
+    private void Start()
+    {
+        ActivateMenuCamera();
+    }
     public void InitializeCinematicCamera(Transform position)
     {
         cinematicCamera.m_Follow = position.transform;
@@ -39,10 +44,18 @@ public class CameraManager : MonoBehaviour
     {
         cinematicCamera.gameObject.SetActive(true);
         gameCamera.gameObject.SetActive(false);
+        menuCamera.gameObject.SetActive(false);
     }
     public void ActivateGameCamera()
     {
         gameCamera.gameObject.SetActive(true);
         cinematicCamera.gameObject.SetActive(false);
+        menuCamera.gameObject.SetActive(false);
+    }
+    public void ActivateMenuCamera()
+    {
+        gameCamera.gameObject.SetActive(false);
+        cinematicCamera.gameObject.SetActive(false);
+        menuCamera.gameObject.SetActive(true);
     }
 }

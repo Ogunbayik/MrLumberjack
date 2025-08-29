@@ -96,6 +96,7 @@ public class FlatbedItemHolder : MonoBehaviour
         else
         {
             Debug.Log("Flatbed is loaded but still need more item for loaded");
+            ToggleLoadObjectActivation(true);
             isLoaded = false;
         }
     }

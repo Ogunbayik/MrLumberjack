@@ -37,4 +37,9 @@ public class Consts
         public const string RESPAWN = "OnRespawn";
         public const string DEAD = "OnDead";
     }
+    public struct MoneyAnimationParameter
+    {
+        public const string ADD_MONEY = "AddMoney";
+        public const string SPEND_MONEY = "SpendMoney";
+    }
 }

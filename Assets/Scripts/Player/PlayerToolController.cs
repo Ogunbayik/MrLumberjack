@@ -7,7 +7,6 @@ public class PlayerToolController : MonoBehaviour
     private PlayerUI playerUI;
 
     private PlayerStateController stateController;
-    private PlayerCarryController carryController;
     private PlayerInput playerInput;
 
     private enum Tools
@@ -28,7 +27,6 @@ public class PlayerToolController : MonoBehaviour
     private void Awake()
     {
         stateController = GetComponent<PlayerStateController>();
-        carryController = GetComponent<PlayerCarryController>();
         playerInput = GetComponent<PlayerInput>();
         playerUI = GetComponentInChildren<PlayerUI>();
     }

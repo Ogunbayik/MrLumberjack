@@ -53,7 +53,7 @@ public class MoneyManager : MonoBehaviour
             UpdateCostText(cost);
             SpendMoney(cost);
             UpdateMoneyUI();
-            animationController.SpendMoneyAnimation();
+            animationController.PlaySpendMoneyAnimation();
 
             return true;
         }
