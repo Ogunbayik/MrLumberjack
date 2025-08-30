@@ -13,8 +13,22 @@ public class StandUI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI materialCountText;
     void Start()
     {
+        InitializeUI();
+        GameManager.Instance.OnGameStart += Instance_OnGameStart;
+    }
+    private void OnDisable()
+    {
+        GameManager.Instance.OnGameStart -= Instance_OnGameStart;
+    }
+    private void Instance_OnGameStart()
+    {
+        ShowNotWorkingUI(true);
+    }
+    private void InitializeUI()
+    {
         imageActivate.sprite = notWorkingSprite;
         ShowItemCounterUI(false);
+        ShowNotWorkingUI(false);
     }
     public void ShowItemCounterUI(bool isActive)
     {

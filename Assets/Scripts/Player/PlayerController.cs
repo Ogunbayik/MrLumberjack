@@ -26,10 +26,20 @@ public class PlayerController : MonoBehaviour
     {
         stateController = GetComponent<PlayerStateController>();
         carryController = GetComponent<PlayerCarryController>();
-
         playerRb = GetComponent<Rigidbody>();
-        movementSpeed = runSpeed;
     }
+    private void Start()
+    {
+        SetPlayerController(false);
+        movementSpeed = runSpeed;
+        GameManager.Instance.OnGameStart += Instance_OnGameStart;
+    }
+
+    private void Instance_OnGameStart()
+    {
+        SetPlayerController(true);
+    }
+
     void Update()
     {
         if (stateController.currentState == PlayerStateController.States.Chopping || stateController.currentState == PlayerStateController.States.Mining)

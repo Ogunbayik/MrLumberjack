@@ -6,18 +6,10 @@ using System;
 public class GameManager : MonoBehaviour
 {
     public event Action OnClickStartButton;
+    public event Action OnGameStart;
 
     public static GameManager Instance;
-    public enum States
-    {
-        StartMenu,
-        InGame,
-        Pause
-    }
 
-    private States currentState;
-
-    [SerializeField] private GameObject menuUIVisual;
     private void Awake()
     {
         #region Singleton
@@ -32,21 +24,21 @@ public class GameManager : MonoBehaviour
         }
         #endregion
     }
-    void Start()
+    private void OnEnable()
     {
-        InitializeGameSettings();
+        OnClickStartButton += GameManager_OnClickStartButton;
     }
-    private void InitializeGameSettings()
-    {
-        currentState = States.StartMenu;
-        ShowMenuVisual(true);
-    }
-    private void SetStates(States newState)
-    {
-        if (currentState == newState)
-            return;
 
-        currentState = newState;
+    private void GameManager_OnClickStartButton()
+    {
+        StartCoroutine(nameof(StartGameSequence));
+    }
+
+    private IEnumerator StartGameSequence()
+    {
+        var cinematicDelayTimer = 3f;
+        yield return new WaitForSeconds(cinematicDelayTimer);
+        OnGameStart?.Invoke();
     }
     public void StartGame()
     {
@@ -56,9 +48,5 @@ public class GameManager : MonoBehaviour
     {
         Debug.Log("Exit Game");
         Application.Quit();
-    }
-    private void ShowMenuVisual(bool isActive)
-    {
-        menuUIVisual.SetActive(isActive);
     }
 }

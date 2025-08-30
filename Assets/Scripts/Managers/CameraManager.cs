@@ -7,13 +7,21 @@ public class CameraManager : MonoBehaviour
 {
     public static CameraManager Instance;
 
+    private PlayerCarryController player;
+
     [Header("Game Cameras")]
-    [SerializeField] private CinemachineVirtualCamera menuCamera;
+    [SerializeField] private Camera mainCamera;
+    [SerializeField] private CinemachineVirtualCamera[] menuCameras;
     [SerializeField] private CinemachineVirtualCamera gameCamera;
     [SerializeField] private CinemachineVirtualCamera cinematicCamera;
     [Header("Cinematic Settings")]
     [SerializeField] private Vector3 cameraOffset;
     [SerializeField] private Vector3 cameraRotation;
+
+    private List<Transform> cameraPositionList = new List<Transform>();
+
+    private int priorityActiveIndex = 5;
+    private int priorityDeactiveIndex = 1;
 
     private void Awake()
     {
@@ -28,10 +36,31 @@ public class CameraManager : MonoBehaviour
             Destroy(gameObject);
         }
         #endregion
+
+        player = FindObjectOfType<PlayerCarryController>();
     }
     private void Start()
     {
-        ActivateMenuCamera();
+        foreach (var camera in menuCameras)
+        {
+            cameraPositionList.Add(camera.transform);
+        }
+
+        GameManager.Instance.OnClickStartButton += Instance_OnClickStartButton;
+        GameManager.Instance.OnGameStart += Instance_OnGameStart;
+    }
+    private void OnDisable()
+    {
+        GameManager.Instance.OnClickStartButton -= Instance_OnClickStartButton;
+        GameManager.Instance.OnGameStart -= Instance_OnGameStart;
+    }
+    private void Instance_OnGameStart()
+    {
+        ResetCameraPosition();
+    }
+    private void Instance_OnClickStartButton()
+    {
+        ActivateGameCamera();
     }
     public void InitializeCinematicCamera(Transform position)
     {
@@ -42,20 +71,33 @@ public class CameraManager : MonoBehaviour
     }
     public void ActivateCinematicCamera()
     {
-        cinematicCamera.gameObject.SetActive(true);
-        gameCamera.gameObject.SetActive(false);
-        menuCamera.gameObject.SetActive(false);
+        foreach (var camera in menuCameras)
+        {
+            camera.Priority = priorityDeactiveIndex;
+        }
+
+        gameCamera.Priority = priorityDeactiveIndex;
+        cinematicCamera.Priority = priorityActiveIndex;
     }
     public void ActivateGameCamera()
     {
-        gameCamera.gameObject.SetActive(true);
-        cinematicCamera.gameObject.SetActive(false);
-        menuCamera.gameObject.SetActive(false);
+        foreach (var camera in menuCameras)
+        {
+            camera.m_LookAt = player.transform;
+            camera.m_Follow = player.transform;
+            camera.transform.position = mainCamera.transform.position;
+            camera.transform.rotation = mainCamera.transform.rotation;
+            camera.Priority = priorityDeactiveIndex;
+        }
+
+        cinematicCamera.Priority = priorityDeactiveIndex;
+        gameCamera.Priority = priorityActiveIndex;
     }
-    public void ActivateMenuCamera()
+    private void ResetCameraPosition()
     {
-        gameCamera.gameObject.SetActive(false);
-        cinematicCamera.gameObject.SetActive(false);
-        menuCamera.gameObject.SetActive(true);
+        for (int i = 0; i < menuCameras.Length; i++)
+        {
+            menuCameras[i].transform.position = cameraPositionList[i].transform.position;
+        }
     }
 }
